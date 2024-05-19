@@ -29,7 +29,7 @@ SET TIME_ZONE = "+00:00";
 
 -- Teams table
 CREATE TABLE Teams (
-                       team_id INT PRIMARY KEY,
+                       team_id INT PRIMARY KEY AUTO_INCREMENT,
                        name VARCHAR(100),
                        country VARCHAR(100),
                        foundation_year INT,
@@ -38,7 +38,7 @@ CREATE TABLE Teams (
 
 -- Circuits table
 CREATE TABLE Circuits (
-                          circuit_id INT PRIMARY KEY,
+                          circuit_id INT PRIMARY KEY AUTO_INCREMENT,
                           name VARCHAR(100),
                           country VARCHAR(100),
                           length FLOAT,
@@ -47,7 +47,7 @@ CREATE TABLE Circuits (
 
 -- Drivers table
 CREATE TABLE Drivers (
-                         driver_id INT PRIMARY KEY,
+                         driver_id INT PRIMARY KEY AUTO_INCREMENT,
                          name VARCHAR(100),
                          nationality VARCHAR(100),
                          age INT,
@@ -57,7 +57,7 @@ CREATE TABLE Drivers (
 
 -- Cars table
 CREATE TABLE Cars (
-                      car_id INT PRIMARY KEY,
+                      car_id INT PRIMARY KEY AUTO_INCREMENT,
                       brand VARCHAR(100),
                       model VARCHAR(100),
                       manufacturing_year INT,
@@ -69,7 +69,7 @@ CREATE TABLE Cars (
 
 -- Brands table
 CREATE TABLE Brands (
-                        brand_id INT PRIMARY KEY,
+                        brand_id INT PRIMARY KEY AUTO_INCREMENT,
                         name VARCHAR(100),
                         country_of_origin VARCHAR(100),
                         contact_info VARCHAR(255)
@@ -77,7 +77,7 @@ CREATE TABLE Brands (
 
 -- CarModels table
 CREATE TABLE Car_Models (
-                            model_id INT PRIMARY KEY,
+                            model_id INT PRIMARY KEY AUTO_INCREMENT,
                             brand_id INT,
                             model VARCHAR(100),
                             FOREIGN KEY (brand_id) REFERENCES Brands(brand_id)
@@ -85,7 +85,7 @@ CREATE TABLE Car_Models (
 
 -- Races table
 CREATE TABLE Races (
-                       race_id INT PRIMARY KEY,
+                       race_id INT PRIMARY KEY AUTO_INCREMENT,
                        name VARCHAR(100),
                        circuit_id INT,
                        date DATE,

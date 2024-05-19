@@ -88,20 +88,23 @@ public class BackOffice {
 
 
     private void showWelcomeMessage() {
-        out.println("\n*** Welcome to the ShoeShop Back Office ***\n");
+        out.println("\n*** Welcome to the GT3 Back Office ***\n");
         out.println("Select a menu option:");
-        out.println();  // Afegeix un espai per separaciÃ³
+        out.println();
     }
 
     private void showMainMenu() {
         out.println("\n*** Main Menu ***\n");
-        out.println("1. Address");
-        out.println("2. Client");
-        out.println("3. Inventory");
-        out.println("4. Model");
-        out.println("5. Shoe");
-        out.println("6. ShoeStore");
-        out.println("7. Supplier");
+        out.println("1. Teams");
+        out.println("2. Circuits");
+        out.println("3. Drivers");
+        out.println("4. Cars");
+        out.println("5. Brands");
+        out.println("6. CarModels");
+        out.println("7. Races");
+        out.println("8. Race Teams");
+        out.println("9. Race Drivers");
+        out.println("10. Race Results");
         out.println("\nType 'exit' to quit.");
     }
 }
