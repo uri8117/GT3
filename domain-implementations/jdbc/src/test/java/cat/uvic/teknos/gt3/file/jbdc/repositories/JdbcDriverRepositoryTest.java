@@ -27,11 +27,11 @@ public class JdbcDriverRepositoryTest {
     void shouldInsertNewDriverTest() throws SQLException {
 
         Driver driver = new Driver();
-        driver.setDriverId(1);
         driver.setName("Lewis Hamilton");
         driver.setNationality("British");
         driver.setAge(37);
-        driver.setTeamId(1); // Assuming team with ID 1 exists in the database
+        driver.setCarId(3);
+        driver.setTeamId(3); // Assuming team with ID 1 exists in the database
 
         var repository = new JdbcDriverRepository(connection);
         repository.save(driver);
@@ -46,11 +46,12 @@ public class JdbcDriverRepositoryTest {
     void shouldUpdateDriverTest() throws SQLException {
 
         Driver driver = new Driver();
-        driver.setDriverId(1); // Assuming driver with ID 1 exists in the database
+        driver.setDriverId(3); // Assuming driver with ID 1 exists in the database
         driver.setName("Max Verstappen");
         driver.setNationality("Dutch");
         driver.setAge(24);
-        driver.setTeamId(2); // Assuming team with ID 2 exists in the database
+        driver.setCarId(3);
+        driver.setTeamId(3); // Assuming team with ID 2 exists in the database
 
         var repository = new JdbcDriverRepository(connection);
         repository.save(driver);
@@ -63,7 +64,7 @@ public class JdbcDriverRepositoryTest {
     void shouldDeleteDriverTest() throws SQLException {
 
         Driver driver = new Driver();
-        driver.setDriverId(1); // Assuming driver with ID 1 exists in the database
+        driver.setDriverId(3); // Assuming driver with ID 1 exists in the database
 
         var repository = new JdbcDriverRepository(connection);
         repository.delete(driver);

@@ -1,13 +1,15 @@
 package cat.uvic.teknos.gt3.domain.models;
 
+import java.util.Set;
+
 public interface Circuit {
-    int getCircuitId();
+    int getId();
 
-    void setCircuitId(int circuitId);
+    void setId(int id);
 
-    String getName();
+    String getCircuitName();
 
-    void setName(String name);
+    void setCircuitName(String circuitName);
 
     String getCountry();
 
@@ -17,7 +19,7 @@ public interface Circuit {
 
     void setLength(float length);
 
-    String getType();
+    Set<Race> getRace();
 
-    void setType(String type);
+    void setRace(Set<Race> race);
 }

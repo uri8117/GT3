@@ -3,6 +3,7 @@ package cat.uvic.teknos.gt3.file.jbdc.models;
 public class Team implements cat.uvic.teknos.gt3.domain.models.Team {
     private int teamId;
     private String name;
+    private int brandId;
     private String country;
     private int foundationYear;
     private String contactInfo;
@@ -25,6 +26,16 @@ public class Team implements cat.uvic.teknos.gt3.domain.models.Team {
     @Override
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public int getBrandId() {
+        return brandId;
+    }
+
+    @Override
+    public void setBrandId(int brandId) {
+        this.brandId = brandId;
     }
 
     @Override

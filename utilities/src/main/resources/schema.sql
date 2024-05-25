@@ -1,123 +1,78 @@
--- PHPMYADMIN SQL DUMP
--- VERSION 5.0.1
--- HTTPS://WWW.PHPMYADMIN.NET/
---
--- HOST: 127.0.0.1
--- GENERATION TIME: MAR 24, 2020 AT 06:55 PM
--- SERVER VERSION: 10.4.11-MARIADB
--- PHP VERSION: 7.4.3
-DROP DATABASE IF EXISTS GT3;
+DROP DATABASE IF EXISTS GT3_REP;
+CREATE DATABASE IF NOT EXISTS GT3_REP;
+USE GT3_REP;
 
-CREATE DATABASE GT3;
+-- Table to store car brands
+CREATE TABLE IF NOT EXISTS BRAND (
+                                     ID_BRAND INT PRIMARY KEY AUTO_INCREMENT,
+                                     BRAND_NAME VARCHAR(50) NOT NULL
+    );
 
-USE GT3;
+-- Table to store information about cars
+CREATE TABLE IF NOT EXISTS CAR (
+                                   ID_CAR INT PRIMARY KEY AUTO_INCREMENT,
+                                   ID_BRAND INT NOT NULL,
+                                   MODEL_NAME VARCHAR(50) NOT NULL,
+    FOREIGN KEY (ID_BRAND) REFERENCES BRAND(ID_BRAND) ON DELETE CASCADE
+    );
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
-SET TIME_ZONE = "+00:00";
+-- Table to store information about drivers
+CREATE TABLE IF NOT EXISTS DRIVER (
+                                      ID_DRIVER INT PRIMARY KEY AUTO_INCREMENT,
+                                      FIRST_NAME VARCHAR(50) NOT NULL,
+    LAST_NAME VARCHAR(50) NOT NULL,
+    NATIONALITY VARCHAR(50) NOT NULL,
+    BIRTHDATE DATE NOT NULL
+    );
 
+-- Table to store specific data about drivers (one-to-one relationship)
+CREATE TABLE IF NOT EXISTS BRAND_DATA (
+                                          ID_BRAND INT PRIMARY KEY,
+                                          COUNTRY_OF_ORIGIN VARCHAR(100),
+    CONTACT_INFO VARCHAR(255),
+    FOREIGN KEY (ID_BRAND) REFERENCES BRAND(ID_BRAND) ON DELETE CASCADE
+    );
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES UTF8MB4 */;
+-- Table to store specific data about cars (one-to-one relationship)
+CREATE TABLE IF NOT EXISTS CAR_DATA (
+                                        ID_CAR INT PRIMARY KEY,
+                                        HORSEPOWER INT NOT NULL,
+                                        WEIGHT INT NOT NULL,
+                                        FOREIGN KEY (ID_CAR) REFERENCES CAR(ID_CAR) ON DELETE CASCADE
+    );
 
---
--- DATABASE: `GT3`
---
+-- Table for the many-to-many relationship between drivers and cars
+CREATE TABLE IF NOT EXISTS CAR_DRIVER (
+                                          ID_CAR INT NOT NULL,
+                                          ID_DRIVER INT NOT NULL,
+                                          PRIMARY KEY (ID_CAR, ID_DRIVER),
+    FOREIGN KEY (ID_CAR) REFERENCES CAR(ID_CAR) ON DELETE CASCADE,
+    FOREIGN KEY (ID_DRIVER) REFERENCES DRIVER(ID_DRIVER) ON DELETE CASCADE
+    );
 
--- Teams table
-CREATE TABLE Teams (
-                       team_id INT PRIMARY KEY AUTO_INCREMENT,
-                       name VARCHAR(100),
-                       country VARCHAR(100),
-                       foundation_year INT,
-                       contact_info VARCHAR(255)
-);
+-- Table to store information about racing circuits
+CREATE TABLE IF NOT EXISTS CIRCUIT (
+                                       ID_CIRCUIT INT PRIMARY KEY AUTO_INCREMENT,
+                                       CIRCUIT_NAME VARCHAR(50) NOT NULL,
+    COUNTRY VARCHAR(50) NOT NULL,
+    LENGTH_KM DECIMAL(5, 2) NOT NULL
+    );
 
--- Circuits table
-CREATE TABLE Circuits (
-                          circuit_id INT PRIMARY KEY AUTO_INCREMENT,
-                          name VARCHAR(100),
-                          country VARCHAR(100),
-                          length FLOAT,
-                          type VARCHAR(100)
-);
+-- Table to store information about races
+CREATE TABLE IF NOT EXISTS RACE (
+                                    ID_RACE INT PRIMARY KEY AUTO_INCREMENT,
+                                    ID_CIRCUIT INT NOT NULL,
+                                    RACE_NAME VARCHAR(50) NOT NULL,
+    RACE_DATE DATE NOT NULL,
+    FOREIGN KEY (ID_CIRCUIT) REFERENCES CIRCUIT(ID_CIRCUIT) ON DELETE CASCADE
+    );
 
--- Drivers table
-CREATE TABLE Drivers (
-                         driver_id INT PRIMARY KEY AUTO_INCREMENT,
-                         name VARCHAR(100),
-                         nationality VARCHAR(100),
-                         age INT,
-                         team_id INT,
-                         FOREIGN KEY (team_id) REFERENCES Teams(team_id)
-);
-
--- Cars table
-CREATE TABLE Cars (
-                      car_id INT PRIMARY KEY AUTO_INCREMENT,
-                      brand VARCHAR(100),
-                      model VARCHAR(100),
-                      manufacturing_year INT,
-                      power INT,
-                      weight INT,
-                      engine_type VARCHAR(100),
-                      chassis_manufacturer VARCHAR(100)
-);
-
--- Brands table
-CREATE TABLE Brands (
-                        brand_id INT PRIMARY KEY AUTO_INCREMENT,
-                        name VARCHAR(100),
-                        country_of_origin VARCHAR(100),
-                        contact_info VARCHAR(255)
-);
-
--- CarModels table
-CREATE TABLE Car_Models (
-                            model_id INT PRIMARY KEY AUTO_INCREMENT,
-                            brand_id INT,
-                            model VARCHAR(100),
-                            FOREIGN KEY (brand_id) REFERENCES Brands(brand_id)
-);
-
--- Races table
-CREATE TABLE Races (
-                       race_id INT PRIMARY KEY AUTO_INCREMENT,
-                       name VARCHAR(100),
-                       circuit_id INT,
-                       date DATE,
-                       FOREIGN KEY (circuit_id) REFERENCES Circuits(circuit_id)
-);
-
--- RaceTeams table (Many-to-Many relationship between Races and Teams)
-CREATE TABLE Race_Teams (
-                            race_id INT,
-                            team_id INT,
-                            PRIMARY KEY (race_id, team_id),
-                            FOREIGN KEY (race_id) REFERENCES Races(race_id),
-                            FOREIGN KEY (team_id) REFERENCES Teams(team_id)
-);
-
--- RaceDrivers table (Many-to-Many relationship between Races and Drivers)
-CREATE TABLE Race_Drivers (
-                              race_id INT,
-                              driver_id INT,
-                              PRIMARY KEY (race_id, driver_id),
-                              FOREIGN KEY (race_id) REFERENCES Races(race_id),
-                              FOREIGN KEY (driver_id) REFERENCES Drivers(driver_id)
-);
-
--- RaceResults table
-CREATE TABLE Race_Results (
-                              result_id INT PRIMARY KEY,
-                              race_id INT,
-                              team_id INT,
-                              driver_id INT,
-                              position INT,
-                              FOREIGN KEY (race_id) REFERENCES Races(race_id),
-                              FOREIGN KEY (team_id) REFERENCES Teams(team_id),
-                              FOREIGN KEY (driver_id) REFERENCES Drivers(driver_id)
-);
+-- Table for the many-to-many relationship between races and drivers with additional attributes
+CREATE TABLE IF NOT EXISTS RACE_DRIVER (
+                                           ID_RACE INT NOT NULL,
+                                           ID_DRIVER INT NOT NULL,
+                                           POSITION INT NOT NULL,
+                                           PRIMARY KEY (ID_RACE, ID_DRIVER),
+    FOREIGN KEY (ID_RACE) REFERENCES RACE(ID_RACE) ON DELETE CASCADE,
+    FOREIGN KEY (ID_DRIVER) REFERENCES DRIVER(ID_DRIVER) ON DELETE CASCADE
+    );

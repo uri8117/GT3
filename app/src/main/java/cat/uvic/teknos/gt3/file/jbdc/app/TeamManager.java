@@ -1,7 +1,6 @@
 package cat.uvic.teknos.gt3.file.jbdc.app;
 
 import cat.uvic.teknos.gt3.domain.models.ModelFactory;
-import cat.uvic.teknos.gt3.domain.models.Team;
 import cat.uvic.teknos.gt3.domain.repositories.TeamRepository;
 
 import java.io.BufferedReader;

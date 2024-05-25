@@ -52,7 +52,6 @@ public class CarManager {
         var cars = carRepository.getAll();
         out.println(AsciiTable.getTable(cars, Arrays.asList(
                 new Column().header("Id").with(car -> String.valueOf(car.getCarId())),
-                new Column().header("Brand").with(Car::getBrand),
                 new Column().header("Model").with(Car::getModel),
                 new Column().header("Manufacturing Year").with(car -> String.valueOf(car.getManufacturingYear())),
                 new Column().header("Power").with(car -> String.valueOf(car.getPower())),
@@ -85,8 +84,6 @@ public class CarManager {
 
         var car = carRepository.get(id);
         if (car != null) {
-            out.println("Enter new Brand:");
-            car.setBrand(readLine(in));
 
             out.println("Enter new Model:");
             car.setModel(readLine(in));
@@ -106,6 +103,9 @@ public class CarManager {
             out.println("Enter new Chassis Manufacturer:");
             car.setChassisManufacturer(readLine(in));
 
+            out.println("Enter new Team Id:");
+            car.setTeamId(Integer.parseInt(readLine(in)));
+
             carRepository.save(car);
             out.println("\nSuccessfully updated.\n");
         } else {
@@ -117,9 +117,6 @@ public class CarManager {
         out.println("\n*** Insert Car ***\n");
 
         var car = modelFactory.createCar();
-
-        out.println("Enter the Brand:");
-        car.setBrand(readLine(in));
 
         out.println("Enter the Model:");
         car.setModel(readLine(in));
@@ -138,6 +135,9 @@ public class CarManager {
 
         out.println("Enter the Chassis Manufacturer:");
         car.setChassisManufacturer(readLine(in));
+
+        out.println("Enter new Team Id:");
+        car.setTeamId(Integer.parseInt(readLine(in)));
 
         carRepository.save(car);
         out.println("\nSuccessfully inserted.\n");

@@ -1,23 +1,34 @@
 package cat.uvic.teknos.gt3.domain.models;
 
+import java.sql.Date;
+import java.util.Set;
+
 public interface Driver {
-    int getDriverId();
+    int getId();
 
-    void setDriverId(int driverId);
+    void setId(int driverId);
 
-    String getName();
+    String getFirstName();
 
-    void setName(String name);
+    void setFirstName(String firstName);
+
+    String getLastName();
+
+    void setLastName(String lastName);
 
     String getNationality();
 
     void setNationality(String nationality);
 
-    int getAge();
+    Date getBirthdate();
 
-    void setAge(int age);
+    void setBirthdate(java.sql.Date birthdate);
 
-    int getTeamId();
+    Set<Car> getCar();
 
-    void setTeamId(int teamId);
+    void setCar(Set<Car> car);
+
+    Set<Race> getRace();
+
+    void setRace(Set<Race> race);
 }

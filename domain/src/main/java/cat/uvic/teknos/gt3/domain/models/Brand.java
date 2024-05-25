@@ -1,19 +1,21 @@
 package cat.uvic.teknos.gt3.domain.models;
 
+import java.util.Set;
+
 public interface Brand {
-    int getBrandId();
+    int getId();
 
-    void setBrandId(int brandId);
+    void setId(int id);
 
-    String getName();
+    String getUsername();
 
-    void setName(String brandName);
+    void setUsername(String username);
 
-    String getCountryOfOrigin();
+    Set<Car> getCar();
 
-    void setCountryOfOrigin(String originCountry);
+    void setCar(Set<Car> car);
 
-    String getContactInfo();
+    BrandData getBrandData();
 
-    void setContactInfo(String contactInfo);
+    void setBrandData(BrandData brandData);
 }

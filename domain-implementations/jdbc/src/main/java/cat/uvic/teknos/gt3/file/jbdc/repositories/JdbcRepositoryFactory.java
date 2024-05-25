@@ -50,11 +50,6 @@ public class JdbcRepositoryFactory implements RepositoryFactory {
     }
 
     @Override
-    public CarModelRepository getCarModelRepository() throws SQLException {
-        return new JdbcCarModelRepository(connection);
-    }
-
-    @Override
     public RaceRepository getRaceRepository() throws SQLException {
         return new JdbcRaceRepository(connection);
     }

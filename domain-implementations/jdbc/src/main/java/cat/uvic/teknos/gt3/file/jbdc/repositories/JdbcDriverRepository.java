@@ -23,13 +23,38 @@ public class JdbcDriverRepository implements DriverRepository {
         }
     }
 
+    public Driver findByCarId(int carId) throws SQLException {
+        String sql = "SELECT * FROM DRIVERS WHERE CAR_ID = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, carId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    Driver driver = new cat.uvic.teknos.gt3.file.jbdc.models.Driver();
+                    driver.setDriverId(resultSet.getInt("DRIVER_ID"));
+                    driver.setName(resultSet.getString("NAME"));
+                    driver.setNationality(resultSet.getString("NATIONALITY"));
+                    driver.setAge(resultSet.getInt("AGE"));
+                    driver.setCarId(resultSet.getInt("CAR_ID"));
+                    driver.setTeamId(resultSet.getInt("TEAM_ID"));
+                    return driver;
+                }
+            }
+        }
+        return null;
+    }
+
     private void insert(Driver model) {
-        String sql = "INSERT INTO DRIVERS (NAME, NATIONALITY, AGE, TEAM_ID) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO DRIVERS (NAME, NATIONALITY, AGE, CAR_ID, TEAM_ID) VALUES (?,?,?,?,?)";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, model.getName());
             statement.setString(2, model.getNationality());
             statement.setInt(3, model.getAge());
-            statement.setInt(4, model.getTeamId());
+            if (model.getCarId() == null) {
+                statement.setNull(4, java.sql.Types.INTEGER);
+            } else {
+                statement.setInt(4, model.getCarId());
+            }
+            statement.setInt(5, model.getTeamId());
 
             statement.executeUpdate();
             try (ResultSet keys = statement.getGeneratedKeys()) {
@@ -43,13 +68,18 @@ public class JdbcDriverRepository implements DriverRepository {
     }
 
     private void update(Driver model) {
-        String sql = "UPDATE DRIVERS SET NAME=?, NATIONALITY=?, AGE=?, TEAM_ID=? WHERE DRIVER_ID=?";
+        String sql = "UPDATE DRIVERS SET NAME=?, NATIONALITY=?, AGE=?, CAR_ID=?, TEAM_ID=? WHERE DRIVER_ID=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, model.getName());
             statement.setString(2, model.getNationality());
             statement.setInt(3, model.getAge());
-            statement.setInt(4, model.getTeamId());
-            statement.setInt(5, model.getDriverId());
+            if (model.getCarId() == null) {
+                statement.setNull(4, java.sql.Types.INTEGER);
+            } else {
+                statement.setInt(4, model.getCarId());
+            }
+            statement.setInt(5, model.getTeamId());
+            statement.setInt(6, model.getDriverId());
 
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected == 0) {
@@ -88,6 +118,7 @@ public class JdbcDriverRepository implements DriverRepository {
                     driver.setName(resultSet.getString("NAME"));
                     driver.setNationality(resultSet.getString("NATIONALITY"));
                     driver.setAge(resultSet.getInt("AGE"));
+                    driver.setCarId(resultSet.getInt("CAR_ID"));
                     driver.setTeamId(resultSet.getInt("TEAM_ID"));
                     return driver;
                 } else {
@@ -112,6 +143,7 @@ public class JdbcDriverRepository implements DriverRepository {
                 driver.setName(resultSet.getString("NAME"));
                 driver.setNationality(resultSet.getString("NATIONALITY"));
                 driver.setAge(resultSet.getInt("AGE"));
+                driver.setCarId(resultSet.getInt("CAR_ID"));
                 driver.setTeamId(resultSet.getInt("TEAM_ID"));
                 drivers.add(driver);
             }

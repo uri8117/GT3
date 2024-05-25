@@ -24,15 +24,15 @@ public class JdbcCarRepository implements CarRepository {
     }
 
     private void insert(Car model) {
-        String sql = "INSERT INTO CARS (BRAND, MODEL, MANUFACTURING_YEAR, POWER, WEIGHT, ENGINE_TYPE, CHASSIS_MANUFACTURER) VALUES (?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO CARS (MODEL, MANUFACTURING_YEAR, POWER, WEIGHT, ENGINE_TYPE, CHASSIS_MANUFACTURER, TEAM_ID) VALUES (?,?,?,?,?,?,?)";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, model.getBrand());
-            statement.setString(2, model.getModel());
-            statement.setInt(3, model.getManufacturingYear());
-            statement.setInt(4, model.getPower());
-            statement.setInt(5, model.getWeight());
-            statement.setString(6, model.getEngineType());
-            statement.setString(7, model.getChassisManufacturer());
+            statement.setString(1, model.getModel());
+            statement.setInt(2, model.getManufacturingYear());
+            statement.setInt(3, model.getPower());
+            statement.setInt(4, model.getWeight());
+            statement.setString(5, model.getEngineType());
+            statement.setString(6, model.getChassisManufacturer());
+            statement.setInt(7, model.getTeamId());
 
             statement.executeUpdate();
             try (ResultSet keys = statement.getGeneratedKeys()) {
@@ -46,15 +46,15 @@ public class JdbcCarRepository implements CarRepository {
     }
 
     private void update(Car model) {
-        String sql = "UPDATE CARS SET BRAND=?, MODEL=?, MANUFACTURING_YEAR=?, POWER=?, WEIGHT=?, ENGINE_TYPE=?, CHASSIS_MANUFACTURER=? WHERE CAR_ID=?";
+        String sql = "UPDATE CARS SET MODEL=?, MANUFACTURING_YEAR=?, POWER=?, WEIGHT=?, ENGINE_TYPE=?, CHASSIS_MANUFACTURER=?, TEAM_ID=? WHERE CAR_ID=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, model.getBrand());
-            statement.setString(2, model.getModel());
-            statement.setInt(3, model.getManufacturingYear());
-            statement.setInt(4, model.getPower());
-            statement.setInt(5, model.getWeight());
-            statement.setString(6, model.getEngineType());
-            statement.setString(7, model.getChassisManufacturer());
+            statement.setString(1, model.getModel());
+            statement.setInt(2, model.getManufacturingYear());
+            statement.setInt(3, model.getPower());
+            statement.setInt(4, model.getWeight());
+            statement.setString(5, model.getEngineType());
+            statement.setString(6, model.getChassisManufacturer());
+            statement.setInt(7, model.getTeamId());
             statement.setInt(8, model.getCarId());
 
             int rowsAffected = statement.executeUpdate();
@@ -91,13 +91,13 @@ public class JdbcCarRepository implements CarRepository {
                 if (resultSet.next()) {
                     Car car = new cat.uvic.teknos.gt3.file.jbdc.models.Car();
                     car.setCarId(resultSet.getInt("CAR_ID"));
-                    car.setBrand(resultSet.getString("BRAND"));
                     car.setModel(resultSet.getString("MODEL"));
                     car.setManufacturingYear(resultSet.getInt("MANUFACTURING_YEAR"));
                     car.setPower(resultSet.getInt("POWER"));
                     car.setWeight(resultSet.getInt("WEIGHT"));
                     car.setEngineType(resultSet.getString("ENGINE_TYPE"));
                     car.setChassisManufacturer(resultSet.getString("CHASSIS_MANUFACTURER"));
+                    car.setTeamId(resultSet.getInt("TEAM_ID"));
                     return car;
                 } else {
                     return null;
@@ -118,13 +118,13 @@ public class JdbcCarRepository implements CarRepository {
             while (resultSet.next()) {
                 Car car = new cat.uvic.teknos.gt3.file.jbdc.models.Car();
                 car.setCarId(resultSet.getInt("CAR_ID"));
-                car.setBrand(resultSet.getString("BRAND"));
                 car.setModel(resultSet.getString("MODEL"));
                 car.setManufacturingYear(resultSet.getInt("MANUFACTURING_YEAR"));
                 car.setPower(resultSet.getInt("POWER"));
                 car.setWeight(resultSet.getInt("WEIGHT"));
                 car.setEngineType(resultSet.getString("ENGINE_TYPE"));
                 car.setChassisManufacturer(resultSet.getString("CHASSIS_MANUFACTURER"));
+                car.setTeamId(resultSet.getInt("TEAM_ID"));
                 cars.add(car);
             }
             return cars;

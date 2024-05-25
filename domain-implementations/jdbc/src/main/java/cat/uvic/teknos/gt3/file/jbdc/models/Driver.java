@@ -5,6 +5,7 @@ public class Driver implements cat.uvic.teknos.gt3.domain.models.Driver {
     private String name;
     private String nationality;
     private int age;
+    private Integer carId;
     private int teamId;
 
     @Override
@@ -45,6 +46,16 @@ public class Driver implements cat.uvic.teknos.gt3.domain.models.Driver {
     @Override
     public void setAge(int age) {
         this.age = age;
+    }
+
+    @Override
+    public Integer getCarId() {
+        return carId;
+    }
+
+    @Override
+    public void setCarId(Integer carId) {
+        this.carId = carId;
     }
 
     @Override

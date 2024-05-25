@@ -1,21 +1,26 @@
 package cat.uvic.teknos.gt3.domain.models;
 
 import java.sql.Date;
+import java.util.Set;
 
 public interface Race {
-    int getRaceId();
+    int getId();
 
-    void setRaceId(int id);
+    void setId(int id);
 
-    String getName();
+    String getRaceName();
 
-    void setName(String name);
+    void setRaceName(String raceName);
 
-    int getCircuitId();
+    Date getRaceDate();
 
-    void setCircuitId(int id);
+    void setRaceDate(java.sql.Date raceDate);
 
-    Date getDate();
+    Set<Driver> getDriver();
 
-    void setDate(java.sql.Date date);
+    void setDriver(Set<Driver> driver);
+
+    Circuit getCircuit();
+
+    void setCircuit(Circuit circuit);
 }

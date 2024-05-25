@@ -35,7 +35,6 @@ public class BackOffice {
                 case "3" -> managerDriver();
                 case "4" -> managerCar();
                 case "5" -> managerBrand();
-                case "6" -> managerCarModel();
                 case "7" -> managerRace();
                 case "8" -> managerRaceTeam();
                 case "9" -> managerRaceDriver();
@@ -67,9 +66,6 @@ public class BackOffice {
         new BrandManager(in, out, repositoryFactory.getBrandRepository(), modelFactory).start();
     }
 
-    private void managerCarModel() throws SQLException {
-        new CarModelManager(in, out, repositoryFactory.getCarModelRepository(), modelFactory).start();
-    }
     private void managerRace() throws SQLException {
         new RaceManager(in, out, repositoryFactory.getRaceRepository(), modelFactory).start();
     }
@@ -100,7 +96,6 @@ public class BackOffice {
         out.println("3. Drivers");
         out.println("4. Cars");
         out.println("5. Brands");
-        out.println("6. CarModels");
         out.println("7. Races");
         out.println("8. Race Teams");
         out.println("9. Race Drivers");

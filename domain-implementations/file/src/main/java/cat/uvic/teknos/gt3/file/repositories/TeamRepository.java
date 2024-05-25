@@ -1,7 +1,5 @@
 package cat.uvic.teknos.gt3.file.repositories;
 
-import cat.uvic.teknos.gt3.domain.models.Team;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;

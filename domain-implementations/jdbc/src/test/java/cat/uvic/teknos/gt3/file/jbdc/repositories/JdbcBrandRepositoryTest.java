@@ -27,10 +27,9 @@ public class JdbcBrandRepositoryTest {
     void shouldInsertNewBrandTest() throws SQLException {
 
         Brand brand = new Brand();
-        brand.setBrandId(1);
-        brand.setName("Ferrari");
-        brand.setCountryOfOrigin("Italy");
-        brand.setContactInfo("contact@ferrari.com");
+        brand.setName("Audi");
+        brand.setCountryOfOrigin("Germany");
+        brand.setContactInfo("contact@audi.com");
 
         var repository = new JdbcBrandRepository(connection);
         repository.save(brand);
@@ -45,7 +44,7 @@ public class JdbcBrandRepositoryTest {
     void shouldUpdateBrandTest() throws SQLException {
 
         Brand brand = new Brand();
-        brand.setBrandId(1); // Assuming brand with ID 1 exists in the database
+        brand.setBrandId(3); // Assuming brand with ID 1 exists in the database
         brand.setName("Mercedes-Benz");
         brand.setCountryOfOrigin("Germany");
         brand.setContactInfo("contact@mercedesbenz.com");
@@ -61,7 +60,7 @@ public class JdbcBrandRepositoryTest {
     void shouldDeleteBrandTest() throws SQLException {
 
         Brand brand = new Brand();
-        brand.setBrandId(1); // Assuming brand with ID 1 exists in the database
+        brand.setBrandId(3); // Assuming brand with ID 1 exists in the database
 
         var repository = new JdbcBrandRepository(connection);
         repository.delete(brand);

@@ -1,17 +1,5 @@
 package cat.uvic.teknos.gt3.file.jbdc.app;
 
-import cat.uvic.teknos.gt3.domain.models.RaceDriver;
-import cat.uvic.teknos.gt3.domain.repositories.RaceDriverRepository;
-
-import java.io.BufferedReader;
-import java.io.PrintStream;
-import java.util.Arrays;
-
-import com.github.freva.asciitable.AsciiTable;
-import com.github.freva.asciitable.Column;
-
-import static cat.uvic.teknos.gt3.file.jbdc.app.IOUtils.readLine;
-
 public class RaceDriverManager {
 
     /*private final PrintStream out;

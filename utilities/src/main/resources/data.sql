@@ -1,67 +1,70 @@
-USE GT3;
--- Inserts for Teams table
--- Inserts for Teams table
-INSERT INTO Teams (name, country, foundation_year, contact_info) VALUES
-                                                                     ('Team A', 'USA', 2005, 'teamA@example.com'),
-                                                                     ('Team B', 'Germany', 2010, 'teamB@example.com'),
-                                                                     ('Team C', 'Italy', 2008, 'teamC@example.com');
+USE GT3_REP;
+-- Inserts for the BRAND table
+INSERT INTO BRAND (BRAND_NAME) VALUES
+                                   ('Ferrari'), -- Ferrari brand
+                                   ('Porsche'), -- Porsche brand
+                                   ('Lamborghini'), -- Lamborghini brand
+                                   ('Mercedes'), -- Mercedes brand
+                                   ('Audi'); -- Audi brand
 
--- Inserts for Circuits table
-INSERT INTO Circuits (name, country, length, type) VALUES
-                                                       ('Circuit 1', 'USA', 4.3, 'Permanent'),
-                                                       ('Circuit 2', 'Germany', 5.1, 'Street'),
-                                                       ('Circuit 3', 'Italy', 3.6, 'Permanent');
+-- Inserts for the CAR table
+INSERT INTO CAR (ID_BRAND, MODEL_NAME) VALUES
+                                           (1, '488 GT3'), -- Ferrari 488 GT3
+                                           (2, '911 GT3 R'), -- Porsche 911 GT3 R
+                                           (3, 'Huracan GT3'), -- Lamborghini Huracan GT3
+                                           (4, 'AMG GT3'), -- Mercedes AMG GT3
+                                           (5, 'R8 LMS'); -- Audi R8 LMS
 
--- Inserts for Drivers table
-INSERT INTO Drivers (name, nationality, age, team_id) VALUES
-                                                          ('John Smith', 'USA', 30, 1),
-                                                          ('Emma Müller', 'Germany', 28, 2),
-                                                          ('Luigi Rossi', 'Italy', 32, 3);
+-- Inserts for the DRIVER table
+INSERT INTO DRIVER (FIRST_NAME, LAST_NAME, NATIONALITY, BIRTHDATE) VALUES
+                                                                       ('Lewis', 'Hamilton', 'British', '1985-01-07'), -- Lewis Hamilton, British driver
+                                                                       ('Sebastian', 'Vettel', 'German', '1987-07-03'), -- Sebastian Vettel, German driver
+                                                                       ('Max', 'Verstappen', 'Dutch', '1997-09-30'), -- Max Verstappen, Dutch driver
+                                                                       ('Charles', 'Leclerc', 'Monacan', '1997-10-16'), -- Charles Leclerc, Monacan driver
+                                                                       ('Valtteri', 'Bottas', 'Finnish', '1989-08-28'); -- Valtteri Bottas, Finnish driver
 
--- Inserts for Cars table
-INSERT INTO Cars (brand, model, manufacturing_year, power, weight, engine_type, chassis_manufacturer) VALUES
-                                                                                                          ('Brand X', 'Model 1', 2019, 550, 1200, 'V8', 'Manufacturer A'),
-                                                                                                          ('Brand Y', 'Model 2', 2018, 600, 1150, 'V10', 'Manufacturer B'),
-                                                                                                          ('Brand Z', 'Model 3', 2020, 580, 1250, 'V12', 'Manufacturer C');
+-- Inserts for the BRAND_DATA table
+INSERT INTO BRAND_DATA (ID_BRAND, COUNTRY_OF_ORIGIN, CONTACT_INFO) VALUES
+                                                                       (1, 'Italy', 'Maranello, Italy - info@ferrari.com'), -- Ferrari brand data
+                                                                       (2, 'Germany', 'Stuttgart, Germany - info@porsche.com'), -- Porsche brand data
+                                                                       (3, 'Italy', 'Sant\ Agata Bolognese, Italy - info@lamborghini.com'), -- Lamborghini brand data
+                                                                       (4, 'Germany', 'Affalterbach, Germany - info@mercedes-benz.com'), -- Mercedes brand data
+                                                                       (5, 'Germany', 'Ingolstadt, Germany - info@audi.com'); -- Audi brand data
 
--- Inserts for Brands table
-INSERT INTO Brands (name, country_of_origin, contact_info) VALUES
-                                                               ('Brand X', 'USA', 'info@brandx.com'),
-                                                               ('Brand Y', 'Germany', 'info@brandy.com'),
-                                                               ('Brand Z', 'Italy', 'info@brandz.com');
+-- Inserts for the CAR_DATA table
+INSERT INTO CAR_DATA (ID_CAR, HORSEPOWER, WEIGHT) VALUES
+                                                      (1, 600, 1230), -- Ferrari 488 GT3 data
+                                                      (2, 500, 1250), -- Porsche 911 GT3 R data
+                                                      (3, 580, 1240), -- Lamborghini Huracan GT3 data
+                                                      (4, 550, 1260), -- Mercedes AMG GT3 data
+                                                      (5, 560, 1255); -- Audi R8 LMS data
 
--- Inserts for CarModels table
-INSERT INTO Car_Models (brand_id, model) VALUES
-                                             (1, 'Model 1'),
-                                             (2, 'Model 2'),
-                                             (3, 'Model 3');
+-- Inserts for the CAR_DRIVER table
+INSERT INTO CAR_DRIVER (ID_CAR, ID_DRIVER) VALUES
+                                               (1, 1), -- Lewis Hamilton drives Ferrari 488 GT3
+                                               (2, 2), -- Sebastian Vettel drives Porsche 911 GT3 R
+                                               (3, 3), -- Max Verstappen drives Lamborghini Huracan GT3
+                                               (4, 4), -- Charles Leclerc drives Mercedes AMG GT3
+                                               (5, 5); -- Valtteri Bottas drives Audi R8 LMS
 
--- Inserts for Races table
-INSERT INTO Races (name, circuit_id, date) VALUES
-                                               ('Race 1', 1, '2024-05-15'),
-                                               ('Race 2', 2, '2024-06-20'),
-                                               ('Race 3', 3, '2024-07-25');
+-- Inserts for the CIRCUIT table
+INSERT INTO CIRCUIT (CIRCUIT_NAME, COUNTRY, LENGTH_KM) VALUES
+                                                           ('Monza', 'Italy', 5.793), -- Monza circuit in Italy
+                                                           ('Silverstone', 'UK', 5.891), -- Silverstone circuit in UK
+                                                           ('Nurburgring', 'Germany', 5.148), -- Nurburgring circuit in Germany
+                                                           ('Spa-Francorchamps', 'Belgium', 7.004), -- Spa-Francorchamps circuit in Belgium
+                                                           ('Le Mans', 'France', 13.626); -- Le Mans circuit in France
 
--- Inserts for RaceTeams table
-INSERT INTO Race_Teams (race_id, team_id) VALUES
-                                              (1, 1),
-                                              (2, 2),
-                                              (3, 3);
+-- Inserts for the RACE table
+INSERT INTO RACE (ID_CIRCUIT, RACE_NAME, RACE_DATE) VALUES
+                                                        (1, 'Italian GP', '2024-05-01'), -- Italian Grand Prix at Monza
+                                                        (2, 'British GP', '2024-06-01'), -- British Grand Prix at Silverstone
+                                                        (3, 'German GP', '2024-07-01'); -- German Grand Prix at Nurburgring
 
--- Inserts for RaceDrivers table
-INSERT INTO Race_Drivers (race_id, driver_id) VALUES
-                                                  (1, 1),
-                                                  (2, 2),
-                                                  (3, 3);
-
--- Inserts for RaceResults table
-INSERT INTO Race_Results (result_id, race_id, team_id, driver_id, position) VALUES
-                                                                                (1, 1, 1, 1, 1),
-                                                                                (2, 2, 2, 2, 2),
-                                                                                (3, 3, 3, 3, 3);
-
--- Inserts for Circuits table
-INSERT INTO Teams (team_id, name, country, foundation_year, contact_info) VALUES
-                                                                              (1, 'Team A', 'USA', 2005, 'teamA@example.com'),
-                                                                              (2, 'Team B', 'Germany', 2010, 'teamB@example.com'),
-                                                                              (3, 'Team C', 'Italy', 2008, 'teamC@example.com');
+-- Inserts for the RACE_DRIVER table
+INSERT INTO RACE_DRIVER (ID_RACE, ID_DRIVER, POSITION) VALUES
+                                                           (1, 1, 1), -- Lewis Hamilton finished 1st in the Italian GP
+                                                           (1, 2, 2), -- Sebastian Vettel finished 2nd in the Italian GP
+                                                           (2, 3, 1), -- Max Verstappen finished 1st in the British GP
+                                                           (2, 4, 2), -- Charles Leclerc finished 2nd in the British GP
+                                                           (3, 5, 1); -- Valtteri Bottas finished 1st in the German GP

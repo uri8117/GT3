@@ -14,8 +14,6 @@ public interface RepositoryFactory {
 
     BrandRepository getBrandRepository() throws SQLException;
 
-    CarModelRepository getCarModelRepository() throws SQLException;
-
     RaceRepository getRaceRepository() throws SQLException;
 
     RaceTeamRepository getRaceTeamRepository() throws SQLException;

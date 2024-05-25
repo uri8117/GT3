@@ -27,8 +27,8 @@ public class JdbcTeamRepositoryTest {
     void shouldInsertNewTeamTest() throws SQLException {
 
         Team team = new Team();
-        team.setTeamId(1);
         team.setName("Mercedes-AMG Petronas Formula One Team");
+        team.setBrandId(1);
         team.setCountry("Germany");
         team.setFoundationYear(2010);
         team.setContactInfo("contact@mercedesamgf1.com");
@@ -46,8 +46,8 @@ public class JdbcTeamRepositoryTest {
     void shouldUpdateTeamTest() throws SQLException {
 
         Team team = new Team();
-        team.setTeamId(1);
         team.setName("Red Bull Racing");
+        team.setBrandId(1);
         team.setCountry("Austria");
         team.setFoundationYear(2005);
         team.setContactInfo("contact@redbullracing.com");

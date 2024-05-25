@@ -1,6 +1,5 @@
 package cat.uvic.teknos.gt3.file.jbdc.repositories;
 
-import cat.uvic.teknos.gt3.domain.models.Team;
 import cat.uvic.teknos.gt3.domain.repositories.TeamRepository;
 
 import java.sql.*;
@@ -24,12 +23,13 @@ public class JdbcTeamRepository implements TeamRepository {
     }
 
     private void insert(Team model) {
-        String sql = "INSERT INTO TEAMS (NAME, COUNTRY, FOUNDATION_YEAR, CONTACT_INFO) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO TEAMS (NAME, BRAND_ID, COUNTRY, FOUNDATION_YEAR, CONTACT_INFO) VALUES (?,?,?,?,?)";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, model.getName());
-            statement.setString(2, model.getCountry());
-            statement.setInt(3, model.getFoundationYear());
-            statement.setString(4, model.getContactInfo());
+            statement.setInt(2, model.getBrandId());
+            statement.setString(3, model.getCountry());
+            statement.setInt(4, model.getFoundationYear());
+            statement.setString(5, model.getContactInfo());
 
             statement.executeUpdate();
             try (ResultSet keys = statement.getGeneratedKeys()) {
@@ -43,13 +43,14 @@ public class JdbcTeamRepository implements TeamRepository {
     }
 
     private void update(Team model) {
-        String sql = "UPDATE TEAMS SET NAME=?, COUNTRY=?, FOUNDATION_YEAR=?, CONTACT_INFO=? WHERE TEAM_ID=?";
+        String sql = "UPDATE TEAMS SET NAME=?, BRAND_ID, COUNTRY=?, FOUNDATION_YEAR=?, CONTACT_INFO=? WHERE TEAM_ID=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, model.getName());
-            statement.setString(2, model.getCountry());
-            statement.setInt(3, model.getFoundationYear());
-            statement.setString(4, model.getContactInfo());
-            statement.setInt(5, model.getTeamId());
+            statement.setInt(2, model.getBrandId());
+            statement.setString(3, model.getCountry());
+            statement.setInt(4, model.getFoundationYear());
+            statement.setString(5, model.getContactInfo());
+            statement.setInt(6, model.getTeamId());
 
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected == 0) {
@@ -86,6 +87,7 @@ public class JdbcTeamRepository implements TeamRepository {
                     Team team = new cat.uvic.teknos.gt3.file.jbdc.models.Team();
                     team.setTeamId(resultSet.getInt("TEAM_ID"));
                     team.setName(resultSet.getString("NAME"));
+                    team.setBrandId(resultSet.getInt("BRAND_ID"));
                     team.setCountry(resultSet.getString("COUNTRY"));
                     team.setFoundationYear(resultSet.getInt("FOUNDATION_YEAR"));
                     team.setContactInfo(resultSet.getString("CONTACT_INFO"));
@@ -110,6 +112,7 @@ public class JdbcTeamRepository implements TeamRepository {
                 Team team = new cat.uvic.teknos.gt3.file.jbdc.models.Team();
                 team.setTeamId(resultSet.getInt("TEAM_ID"));
                 team.setName(resultSet.getString("NAME"));
+                team.setBrandId(resultSet.getInt("BRAND_ID"));
                 team.setCountry(resultSet.getString("COUNTRY"));
                 team.setFoundationYear(resultSet.getInt("FOUNDATION_YEAR"));
                 team.setContactInfo(resultSet.getString("CONTACT_INFO"));

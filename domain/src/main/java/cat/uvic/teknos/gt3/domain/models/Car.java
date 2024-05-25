@@ -1,35 +1,25 @@
 package cat.uvic.teknos.gt3.domain.models;
 
+import java.util.Set;
+
 public interface Car {
-    int getCarId();
+    int getId();
 
-    void setCarId(int carId);
+    void setId(int carId);
 
-    String getBrand();
+    String getModelName();
 
-    void setBrand(String brand);
+    void setModelName(String modelName);
 
-    String getModel();
+    Brand getBrand();
 
-    void setModel(String brandModel);
+    void setBrand(Brand brand);
 
-    int getManufacturingYear();
+    CarData getCarData();
 
-    void setManufacturingYear(int manufacturingYear);
+    void setCarData(CarData carData);
 
-    int getPower();
+    Set<Driver> getDriver();
 
-    void setPower(int power);
-
-    int getWeight();
-
-    void setWeight(int weight);
-
-    String getEngineType();
-
-    void setEngineType(String engineType);
-
-    String getChassisManufacturer();
-
-    void setChassisManufacturer(String chassisManufacturer);
+    void setDriver(Set<Driver> driver);
 }

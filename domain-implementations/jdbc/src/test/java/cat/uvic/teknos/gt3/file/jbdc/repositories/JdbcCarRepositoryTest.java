@@ -2,6 +2,8 @@ package cat.uvic.teknos.gt3.file.jbdc.repositories;
 
 import cat.uvic.teknos.gt3.file.jbdc.models.Car;
 
+import cat.uvic.teknos.gt3.file.jbdc.models.Driver;
+
 import com.fcardara.dbtestutils.junit.CreateSchemaExtension;
 import com.fcardara.dbtestutils.junit.GetConnectionExtension;
 import org.junit.jupiter.api.DisplayName;
@@ -11,8 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith({CreateSchemaExtension.class, GetConnectionExtension.class})
 public class JdbcCarRepositoryTest {
@@ -27,14 +28,14 @@ public class JdbcCarRepositoryTest {
     void shouldInsertNewCarTest() throws SQLException {
 
         Car car = new Car();
-        car.setCarId(1);
-        car.setBrand("Ferrari");
-        car.setModel("SF90");
-        car.setManufacturingYear(2021);
+        car.setModel("911");
+        car.setManufacturingYear(2023);
         car.setPower(1000);
         car.setWeight(743);
         car.setEngineType("Hybrid");
         car.setChassisManufacturer("Ferrari");
+        car.setTeamId(2);
+
 
         var repository = new JdbcCarRepository(connection);
         repository.save(car);
@@ -50,16 +51,20 @@ public class JdbcCarRepositoryTest {
 
         Car car = new Car();
         car.setCarId(1); // Assuming car with ID 1 exists in the database
-        car.setBrand("Mercedes-Benz");
         car.setModel("W13");
         car.setManufacturingYear(2022);
         car.setPower(950);
         car.setWeight(752);
         car.setEngineType("Hybrid");
         car.setChassisManufacturer("Mercedes");
+        car.setTeamId(2);
 
         var repository = new JdbcCarRepository(connection);
         repository.save(car);
+
+        // When a car changes of team the driver must have car_id null
+
+        // When a driver changes of car the car must have driver_id null
 
         assertTrue(true); // You can add assertions based on your requirements
     }
@@ -69,11 +74,24 @@ public class JdbcCarRepositoryTest {
     void shouldDeleteCarTest() throws SQLException {
 
         Car car = new Car();
-        car.setCarId(1); // Assuming car with ID 1 exists in the database
+        car.setCarId(1);
 
         var repository = new JdbcCarRepository(connection);
+        var repositoryDriver = new JdbcDriverRepository(connection);
+
+        // Update driver to set car_id to null before deleting the car
+        Driver driver = repositoryDriver.findByCarId(car.getCarId());
+        if (driver != null) {
+            driver.setCarId(null);
+            repositoryDriver.save(driver); // Update the driver record with car_id set to null
+        }
+
+        // Delete the car
         repository.delete(car);
 
-        // You can add assertions to verify deletion
+        // Add assertions to verify the deletion and driver's car_id being null
+        Driver updatedDriver = repositoryDriver.get(driver.getDriverId());
+        assertNotNull(updatedDriver);
+        assertNull(updatedDriver.getCarId());
     }
 }
