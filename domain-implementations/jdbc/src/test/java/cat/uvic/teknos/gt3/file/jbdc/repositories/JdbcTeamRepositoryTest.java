@@ -1,7 +1,5 @@
 package cat.uvic.teknos.gt3.file.jbdc.repositories;
 
-import cat.uvic.teknos.gt3.file.jbdc.models.Team;
-
 import com.fcardara.dbtestutils.junit.CreateSchemaExtension;
 import com.fcardara.dbtestutils.junit.GetConnectionExtension;
 import org.junit.jupiter.api.DisplayName;

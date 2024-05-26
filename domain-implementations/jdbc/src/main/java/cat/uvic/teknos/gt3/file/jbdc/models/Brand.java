@@ -1,19 +1,24 @@
 package cat.uvic.teknos.gt3.file.jbdc.models;
 
+import cat.uvic.teknos.gt3.domain.models.BrandData;
+import cat.uvic.teknos.gt3.domain.models.Car;
+
+import java.util.Set;
+
 public class Brand implements cat.uvic.teknos.gt3.domain.models.Brand {
-    private int brandId;
+    private int id;
     private String name;
-    private String countryOfOrigin;
-    private String contactInfo;
+    private Set<Car> cars;
+    private BrandData brandData;
 
     @Override
-    public int getBrandId() {
-        return brandId;
+    public int getId() {
+        return id;
     }
 
     @Override
-    public void setBrandId(int brandId) {
-        this.brandId = brandId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
@@ -27,22 +32,22 @@ public class Brand implements cat.uvic.teknos.gt3.domain.models.Brand {
     }
 
     @Override
-    public String getCountryOfOrigin() {
-        return countryOfOrigin;
+    public Set<Car> getCar() {
+        return cars;
     }
 
     @Override
-    public void setCountryOfOrigin(String countryOfOrigin) {
-        this.countryOfOrigin = countryOfOrigin;
+    public void setCar(Set<Car> car) {
+        this.cars = car;
     }
 
     @Override
-    public String getContactInfo() {
-        return contactInfo;
+    public BrandData getBrandData() {
+        return brandData;
     }
 
     @Override
-    public void setContactInfo(String contactInfo) {
-        this.contactInfo = contactInfo;
+    public void setBrandData(BrandData brandData) {
+        this.brandData = brandData;
     }
 }

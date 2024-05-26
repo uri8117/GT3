@@ -1,30 +1,33 @@
 package cat.uvic.teknos.gt3.file.jbdc.models;
 
+import cat.uvic.teknos.gt3.domain.models.Race;
+
+import java.util.Set;
+
 public class Circuit implements cat.uvic.teknos.gt3.domain.models.Circuit {
-    private int circuitId;
-    private String name;
+    private int id;
+    private String circuitName;
     private String country;
     private float length;
-    private String type;
-
+    private Set<Race> races;
     @Override
-    public int getCircuitId() {
-        return circuitId;
+    public int getId() {
+        return id;
     }
 
     @Override
-    public void setCircuitId(int circuitId) {
-        this.circuitId = circuitId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
-    public String getName() {
-        return name;
+    public String getCircuitName() {
+        return circuitName;
     }
 
     @Override
-    public void setName(String name) {
-        this.name = name;
+    public void setCircuitName(String circuitName) {
+        this.circuitName = circuitName;
     }
 
     @Override
@@ -48,12 +51,12 @@ public class Circuit implements cat.uvic.teknos.gt3.domain.models.Circuit {
     }
 
     @Override
-    public String getType() {
-        return type;
+    public Set<Race> getRace() {
+        return races;
     }
 
     @Override
-    public void setType(String type) {
-        this.type = type;
+    public void setRace(Set<Race> race) {
+        this.races = race;
     }
 }

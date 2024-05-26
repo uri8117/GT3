@@ -1,31 +1,48 @@
 package cat.uvic.teknos.gt3.file.jbdc.models;
 
+import cat.uvic.teknos.gt3.domain.models.Car;
+import cat.uvic.teknos.gt3.domain.models.Race;
+
+import java.sql.Date;
+import java.util.Set;
+
 public class Driver implements cat.uvic.teknos.gt3.domain.models.Driver {
-    private int driverId;
-    private String name;
+    private int id;
+    private String firstName;
+    private String lastName;
     private String nationality;
-    private int age;
-    private Integer carId;
-    private int teamId;
+    private Date birthdate;
+    private Set<Car> cars;
+    private Set<Race> races;
 
     @Override
-    public int getDriverId() {
-        return driverId;
+    public int getId() {
+        return id;
     }
 
     @Override
-    public void setDriverId(int driverId) {
-        this.driverId = driverId;
+    public void setId(int driverId) {
+        this.id = driverId;
     }
 
     @Override
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
     @Override
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    @Override
+    public String getLastName() {
+        return lastName;
+    }
+
+    @Override
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     @Override
@@ -39,32 +56,32 @@ public class Driver implements cat.uvic.teknos.gt3.domain.models.Driver {
     }
 
     @Override
-    public int getAge() {
-        return age;
+    public Date getBirthdate() {
+        return birthdate;
     }
 
     @Override
-    public void setAge(int age) {
-        this.age = age;
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
     }
 
     @Override
-    public Integer getCarId() {
-        return carId;
+    public Set<Car> getCar() {
+        return cars;
     }
 
     @Override
-    public void setCarId(Integer carId) {
-        this.carId = carId;
+    public void setCar(Set<Car> car) {
+        this.cars = car;
     }
 
     @Override
-    public int getTeamId() {
-        return teamId;
+    public Set<Race> getRace() {
+        return races;
     }
 
     @Override
-    public void setTeamId(int teamId) {
-        this.teamId = teamId;
+    public void setRace(Set<Race> race) {
+        this.races = race;
     }
 }

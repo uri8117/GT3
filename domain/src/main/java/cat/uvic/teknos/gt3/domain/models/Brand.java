@@ -7,9 +7,9 @@ public interface Brand {
 
     void setId(int id);
 
-    String getUsername();
+    String getName();
 
-    void setUsername(String username);
+    void setName(String name);
 
     Set<Car> getCar();
 

@@ -1,50 +1,65 @@
 package cat.uvic.teknos.gt3.file.jbdc.models;
 
+import cat.uvic.teknos.gt3.domain.models.Circuit;
+import cat.uvic.teknos.gt3.domain.models.Driver;
+
 import java.sql.Date;
+import java.util.Set;
 
 public class Race implements cat.uvic.teknos.gt3.domain.models.Race {
-    private int raceId;
-    private String name;
-    private int circuitId;
-    private java.sql.Date date;
+    private int id;
+    private String raceName;
+    private Date raceDate;
+    private Set<Driver> drivers;
+    private Circuit circuit;
 
     @Override
-    public int getRaceId() {
-        return raceId;
+    public int getId() {
+        return id;
     }
 
     @Override
-    public void setRaceId(int raceId) {
-        this.raceId = raceId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
-    public String getName() {
-        return name;
+    public String getRaceName() {
+        return raceName;
     }
 
     @Override
-    public void setName(String name) {
-        this.name = name;
+    public void setRaceName(String raceName) {
+        this.raceName = raceName;
     }
 
     @Override
-    public int getCircuitId() {
-        return circuitId;
+    public Date getRaceDate() {
+        return raceDate;
     }
 
     @Override
-    public void setCircuitId(int circuitId) {
-        this.circuitId = circuitId;
+    public void setRaceDate(Date raceDate) {
+        this.raceDate = raceDate;
     }
 
     @Override
-    public Date getDate() {
-        return date;
+    public Set<Driver> getDriver() {
+        return drivers;
     }
 
     @Override
-    public void setDate(java.sql.Date date) {
-        this.date = date;
+    public void setDriver(Set<Driver> driver) {
+        this.drivers = driver;
+    }
+
+    @Override
+    public Circuit getCircuit() {
+        return circuit;
+    }
+
+    @Override
+    public void setCircuit(Circuit circuit) {
+        this.circuit = circuit;
     }
 }

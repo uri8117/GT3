@@ -1,11 +1,13 @@
 package cat.uvic.teknos.gt3.file.repositories;
 
+import cat.uvic.teknos.gt3.domain.repositories.Repository;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-public class TeamRepository implements cat.uvic.teknos.gt3.domain.repositories.TeamRepository {
+public class TeamRepository implements Repository<Integer, Team> {
 
     private static Map<Integer, Team> teams = new HashMap<>();
 

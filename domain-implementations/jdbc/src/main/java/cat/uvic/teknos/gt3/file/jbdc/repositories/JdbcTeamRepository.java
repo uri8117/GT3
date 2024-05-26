@@ -1,12 +1,12 @@
 package cat.uvic.teknos.gt3.file.jbdc.repositories;
 
-import cat.uvic.teknos.gt3.domain.repositories.TeamRepository;
+import cat.uvic.teknos.gt3.domain.repositories.Repository;
 
 import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class JdbcTeamRepository implements TeamRepository {
+public class JdbcTeamRepository implements Repository<Integer, Team> {
     private final Connection connection;
 
     public JdbcTeamRepository(Connection connection) {
