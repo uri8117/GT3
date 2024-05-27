@@ -19,7 +19,7 @@ public interface Car {
 
     void setCarData(CarData carData);
 
-    Set<Driver> getDriver();
+    Set<Driver> getDrivers();
 
-    void setDriver(Set<Driver> driver);
+    void setDrivers(Set<Driver> driver);
 }

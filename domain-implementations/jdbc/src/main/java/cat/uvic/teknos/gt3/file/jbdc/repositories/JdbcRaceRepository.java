@@ -3,10 +3,9 @@ package cat.uvic.teknos.gt3.file.jbdc.repositories;
 import cat.uvic.teknos.gt3.domain.models.Race;
 import cat.uvic.teknos.gt3.domain.models.Driver;
 import cat.uvic.teknos.gt3.domain.repositories.RaceRepository;
-import cat.uvic.teknos.gt3.domain.repositories.CircuitRepository;
+import cat.uvic.teknos.gt3.file.jbdc.models.RaceDriver;
 
 import java.sql.*;
-import java.util.HashSet;
 import java.util.Set;
 
 public class JdbcRaceRepository implements RaceRepository {
