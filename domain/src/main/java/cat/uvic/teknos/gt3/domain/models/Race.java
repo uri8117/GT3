@@ -16,9 +16,9 @@ public interface Race {
 
     void setRaceDate(java.sql.Date raceDate);
 
-    Set<Driver> getDriver();
+    Set<Driver> getDrivers();
 
-    void setDriver(Set<Driver> driver);
+    void setDrivers(Set<Driver> driver);
 
     Circuit getCircuit();
 

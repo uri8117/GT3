@@ -1,13 +1,19 @@
 package cat.uvic.teknos.gt3.file.jbdc.repositories;
 
 import cat.uvic.teknos.gt3.domain.models.Race;
+import cat.uvic.teknos.gt3.domain.models.Driver;
 import cat.uvic.teknos.gt3.domain.repositories.RaceRepository;
+import cat.uvic.teknos.gt3.domain.repositories.CircuitRepository;
 
 import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
 public class JdbcRaceRepository implements RaceRepository {
+    private static final String INSERT_RACE = "INSERT INTO RACE (ID_CIRCUIT, RACE_NAME, RACE_DATE) VALUES (?,?,?)";
+    private static final String INSERT_RACE_DRIVER = "INSERT INTO RACE_DRIVER (ID_RACE, ID_DRIVER, POSITION) VALUES (?,?,?)";
+    private static final String SELECT_ALL_RACES = "SELECT * FROM RACE";
+
     private final Connection connection;
 
     public JdbcRaceRepository(Connection connection) {
@@ -16,7 +22,7 @@ public class JdbcRaceRepository implements RaceRepository {
 
     @Override
     public void save(Race model) {
-        if (model.getRaceId() <= 0) {
+        if (model.getId() <= 0) {
             insert(model);
         } else {
             update(model);
@@ -24,96 +30,62 @@ public class JdbcRaceRepository implements RaceRepository {
     }
 
     private void insert(Race model) {
-        String sql = "INSERT INTO RACES (NAME, CIRCUIT_ID, DATE) VALUES (?,?,?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, model.getName());
-            statement.setInt(2, model.getCircuitId());
-            statement.setDate(3, model.getDate());
+        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_RACE, Statement.RETURN_GENERATED_KEYS)) {
+            connection.setAutoCommit(false);
+            preparedStatement.setInt(1, model.getCircuit().getId());
+            preparedStatement.setString(2, model.getRaceName());
+            preparedStatement.setDate(3, model.getRaceDate());
+            preparedStatement.executeUpdate();
 
-            statement.executeUpdate();
-            try (ResultSet keys = statement.getGeneratedKeys()) {
-                if (keys.next()) {
-                    model.setRaceId(keys.getInt(1));
-                }
+            ResultSet keys = preparedStatement.getGeneratedKeys();
+            if (keys.next()) {
+                model.setId(keys.getInt(1));
+            } else {
+                throw new SQLException("Creating race failed, no ID obtained.");
             }
+
+//            if (model.getDrivers() != null) {
+//                for (Driver driver : model.getDrivers()) {
+//                    InsertRaceDriver(driver, model.getId(), position);
+//                }
+//            }
+
+            connection.commit();
         } catch (SQLException e) {
-            throw new RuntimeException("Error inserting race", e);
+            throw new RuntimeException(e);
         }
     }
 
-    private void update(Race model) {
-        String sql = "UPDATE RACES SET NAME=?, CIRCUIT_ID=?, DATE=? WHERE RACE_ID=?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, model.getName());
-            statement.setInt(2, model.getCircuitId());
-            statement.setDate(3, model.getDate());
-            statement.setInt(4, model.getRaceId());
-
-            int rowsAffected = statement.executeUpdate();
-            if (rowsAffected == 0) {
-                throw new SQLException("No race to update");
-            }
+    private void InsertRaceDriver(Driver model, int raceId, int position) {
+        try (
+                var preparedStatement = connection.prepareStatement(INSERT_RACE_DRIVER)
+        ) {
+            preparedStatement.setInt(1, raceId);
+            preparedStatement.setInt(2, model.getId());
+            preparedStatement.setInt(3, position);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error updating race", e);
+            throw new RuntimeException(e);
         }
+    }
+
+    // Método para actualizar una carrera en la base de datos.
+    private void update(Race model) {
+        // Implementa la lógica para actualizar una carrera existente en la base de datos
     }
 
     @Override
     public void delete(Race model) {
-        String sql = "DELETE FROM RACES WHERE RACE_ID = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, model.getRaceId());
-            int rowsAffected = statement.executeUpdate();
-            if (rowsAffected == 0) {
-                System.out.println("No race to delete");
-            } else {
-                System.out.println("Race deleted successfully");
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error deleting race", e);
-        }
+
     }
 
     @Override
     public Race get(Integer id) {
-        String sql = "SELECT * FROM RACES WHERE RACE_ID = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, id);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    Race race = new cat.uvic.teknos.gt3.file.jbdc.models.Race();
-                    race.setRaceId(resultSet.getInt("RACE_ID"));
-                    race.setName(resultSet.getString("NAME"));
-                    race.setCircuitId(resultSet.getInt("CIRCUIT_ID"));
-                    race.setDate(resultSet.getDate("DATE"));
-                    return race;
-                } else {
-                    return null;
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error retrieving race", e);
-        }
+        return null;
     }
 
     @Override
     public Set<Race> getAll() {
-        String sql = "SELECT * FROM RACES";
-        try (PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
-
-            Set<Race> races = new HashSet<>();
-            while (resultSet.next()) {
-                Race race = new cat.uvic.teknos.gt3.file.jbdc.models.Race();
-                race.setRaceId(resultSet.getInt("RACE_ID"));
-                race.setName(resultSet.getString("NAME"));
-                race.setCircuitId(resultSet.getInt("CIRCUIT_ID"));
-                race.setDate(resultSet.getDate("DATE"));
-                races.add(race);
-            }
-            return races;
-        } catch (SQLException e) {
-            throw new RuntimeException("Error retrieving races", e);
-        }
+        return Set.of();
     }
 }

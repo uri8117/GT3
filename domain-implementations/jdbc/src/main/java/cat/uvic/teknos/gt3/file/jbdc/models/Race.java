@@ -44,12 +44,12 @@ public class Race implements cat.uvic.teknos.gt3.domain.models.Race {
     }
 
     @Override
-    public Set<Driver> getDriver() {
+    public Set<Driver> getDrivers() {
         return drivers;
     }
 
     @Override
-    public void setDriver(Set<Driver> driver) {
+    public void setDrivers(Set<Driver> driver) {
         this.drivers = driver;
     }
 

@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS CIRCUIT (
                                        ID_CIRCUIT INT PRIMARY KEY AUTO_INCREMENT,
                                        CIRCUIT_NAME VARCHAR(50) NOT NULL,
     COUNTRY VARCHAR(50) NOT NULL,
-    LENGTH_KM DECIMAL(5, 2) NOT NULL
+    LENGTH_KM FLOAT(5, 2) NOT NULL
     );
 
 -- Table to store information about races
