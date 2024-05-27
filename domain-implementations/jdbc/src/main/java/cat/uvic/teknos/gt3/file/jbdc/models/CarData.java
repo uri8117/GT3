@@ -1,9 +1,12 @@
 package cat.uvic.teknos.gt3.file.jbdc.models;
 
+import cat.uvic.teknos.gt3.domain.models.Car;
+
 public class CarData implements cat.uvic.teknos.gt3.domain.models.CarData {
     private int id;
     private int horsePower;
     private int weight;
+    private Car car;
 
     @Override
     public int getId() {
@@ -33,5 +36,15 @@ public class CarData implements cat.uvic.teknos.gt3.domain.models.CarData {
     @Override
     public void setWeight(int weight) {
         this.weight = weight;
+    }
+
+    @Override
+    public Car getCar() {
+        return car;
+    }
+
+    @Override
+    public void setCar(Car car) {
+        this.car = car;
     }
 }

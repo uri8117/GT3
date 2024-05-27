@@ -1,5 +1,6 @@
 package cat.uvic.teknos.gt3.file.jbdc.repositories;
 
+import cat.uvic.teknos.gt3.domain.models.CarData;
 import cat.uvic.teknos.gt3.domain.models.Driver;
 import cat.uvic.teknos.gt3.domain.repositories.CarRepository;
 import cat.uvic.teknos.gt3.domain.models.Car;
@@ -15,6 +16,8 @@ public class JdbcCarRepository implements CarRepository {
     private static final String INSERT_CAR = "INSERT INTO CAR (ID_BRAND, MODEL_NAME) VALUES (?,?)";
     //private static final String INSERT_DRIVER = "INSERT INTO DRIVER (FIRST_NAME, LAST_NAME, NATIONALITY, BITRHDATE) VALUES (?,?,?,?)";
     private static final String INSERT_CAR_DRIVER = "INSERT INTO CAR_DRIVER (ID_CAR, ID_DRIVER) VALUES (?,?)";
+
+    private static final String INSERT_CAR_DATA = "INSERT INTO CAR_DATA (ID_CAR, HORSEPOWER, WEIGHT) VALUES (?,?,?)";
 
     private final Connection connection;
 
@@ -41,8 +44,9 @@ public class JdbcCarRepository implements CarRepository {
             var keys = preparedStatement.getGeneratedKeys();
             if(keys.next()){
                 model.setId(keys.getInt(1));
+                createDataForCar(model.getId(), model.getCarData());
             } else {
-                throw new SQLException("Creating race failed, no ID obtained.");
+                throw new SQLException("Creating car failed, no ID obtained.");
             }
 
             if (model.getDrivers() != null) {
@@ -67,6 +71,19 @@ public class JdbcCarRepository implements CarRepository {
         ) {
             preparedStatement.setInt(1, carId);
             preparedStatement.setInt(2, model.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void createDataForCar(int carId, CarData model) {
+        try (
+                var preparedStatement = connection.prepareStatement(INSERT_CAR_DATA)
+        ) {
+            preparedStatement.setInt(1, carId);
+            preparedStatement.setInt(2, model.getHorsePower());
+            preparedStatement.setInt(3, model.getWeight());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

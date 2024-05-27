@@ -3,7 +3,7 @@ package cat.uvic.teknos.gt3.file.jbdc.repositories;
 import cat.uvic.teknos.gt3.domain.models.Race;
 import cat.uvic.teknos.gt3.domain.models.Driver;
 import cat.uvic.teknos.gt3.domain.repositories.RaceRepository;
-import cat.uvic.teknos.gt3.file.jbdc.models.RaceDriver;
+import cat.uvic.teknos.gt3.domain.models.RaceDriver;
 
 import java.sql.*;
 import java.util.Set;
@@ -43,11 +43,12 @@ public class JdbcRaceRepository implements RaceRepository {
                 throw new SQLException("Creating race failed, no ID obtained.");
             }
 
-//            if (model.getDrivers() != null) {
-//                for (Driver driver : model.getDrivers()) {
-//                    InsertRaceDriver(driver, model.getId(), position);
-//                }
-//            }
+            if (model.getRaceDrivers() != null) {
+                for (var raceDriver : model.getRaceDrivers()) {
+                    raceDriver.getId().setRaceId(model.getId());
+                    insertRaceDriver(raceDriver);
+                }
+            }
 
             connection.commit();
         } catch (SQLException e) {
@@ -55,13 +56,13 @@ public class JdbcRaceRepository implements RaceRepository {
         }
     }
 
-    private void InsertRaceDriver(Driver model, int raceId, int position) {
+    private void insertRaceDriver(RaceDriver model) {
         try (
                 var preparedStatement = connection.prepareStatement(INSERT_RACE_DRIVER)
         ) {
-            preparedStatement.setInt(1, raceId);
-            preparedStatement.setInt(2, model.getId());
-            preparedStatement.setInt(3, position);
+            preparedStatement.setInt(1, model.getId().getRaceId());
+            preparedStatement.setInt(2, model.getId().getDriverId());
+            preparedStatement.setInt(3, model.getPosition());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

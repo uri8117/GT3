@@ -13,4 +13,8 @@ public interface CarData {
     int getWeight();
 
     void setWeight(int weight);
+
+    Car getCar();
+
+    void setCar(Car car);
 }

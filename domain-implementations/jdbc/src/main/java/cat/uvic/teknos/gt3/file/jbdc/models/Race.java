@@ -10,7 +10,7 @@ public class Race implements cat.uvic.teknos.gt3.domain.models.Race {
     private int id;
     private String raceName;
     private Date raceDate;
-    private Set<Driver> drivers;
+    private Set<cat.uvic.teknos.gt3.domain.models.RaceDriver> raceDrivers;
     private Circuit circuit;
 
     @Override
@@ -44,13 +44,13 @@ public class Race implements cat.uvic.teknos.gt3.domain.models.Race {
     }
 
     @Override
-    public Set<Driver> getDrivers() {
-        return drivers;
+    public Set<cat.uvic.teknos.gt3.domain.models.RaceDriver> getRaceDrivers() {
+        return raceDrivers;
     }
 
     @Override
-    public void setDrivers(Set<Driver> driver) {
-        this.drivers = driver;
+    public void setRaceDrivers(Set<cat.uvic.teknos.gt3.domain.models.RaceDriver> raceDrivers) {
+        this.raceDrivers = raceDrivers;
     }
 
     @Override
@@ -62,4 +62,5 @@ public class Race implements cat.uvic.teknos.gt3.domain.models.Race {
     public void setCircuit(Circuit circuit) {
         this.circuit = circuit;
     }
+
 }
