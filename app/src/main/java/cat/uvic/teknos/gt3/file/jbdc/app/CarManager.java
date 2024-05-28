@@ -1,15 +1,20 @@
 package cat.uvic.teknos.gt3.file.jbdc.app;
 
 import cat.uvic.teknos.gt3.domain.models.Car;
-import cat.uvic.teknos.gt3.domain.models.ModelFactory;
+import cat.uvic.teknos.gt3.file.jbdc.models.CarData;
+
+import cat.uvic.teknos.gt3.file.jbdc.models.Brand;
 import cat.uvic.teknos.gt3.domain.repositories.CarRepository;
+import cat.uvic.teknos.gt3.domain.models.ModelFactory;
+
+import com.github.freva.asciitable.AsciiTable;
+import com.github.freva.asciitable.Column;
+import com.github.freva.asciitable.ColumnData;
 
 import java.io.BufferedReader;
 import java.io.PrintStream;
 import java.util.Arrays;
-
-import com.github.freva.asciitable.AsciiTable;
-import com.github.freva.asciitable.Column;
+import java.util.List;
 
 import static cat.uvic.teknos.gt3.file.jbdc.app.IOUtils.readLine;
 
@@ -28,128 +33,128 @@ public class CarManager {
     }
 
     public void start() {
-        out.println("\n*** Car Management ***\n");
-
         var command = "";
         do {
-            showCarMenu();
+            showMenu();
             command = readLine(in);
 
             switch (command) {
                 case "1" -> insert();
                 case "2" -> update();
                 case "3" -> delete();
-                case "4" -> getAll();
+                case "4" -> get();
+                case "5" -> getAll();
+                default -> out.println("Invalid command");
             }
 
-        } while (!command.equals("exit"));
+        } while (!command.equalsIgnoreCase("exit"));
+        out.println("Exiting Car Management");
+    }
 
-        out.println("\n*** Exiting Car Management ***\n");
+    private void showMenu() {
+        out.println("***Car Manager***");
+        out.println("Type:");
+        out.println("1 to insert a new Car");
+        out.println("2 to update Car");
+        out.println("3 to delete Car");
+        out.println("4 to get a Car");
+        out.println("5 to show all Cars");
+        out.println("'exit' to exit");
+    }
+
+    private void delete() {
+        out.println("Please enter the id of the car you would like to delete");
+        int id = Integer.parseInt(readLine(in));
+        var car = modelFactory.createCar();
+        car.setId(id);
+        carRepository.delete(car);
+    }
+
+    private void insert() {
+        var car = modelFactory.createCar();
+        var carData = modelFactory.createCarData();
+        var brand = new Brand();
+
+        out.println("Car Model Name: ");
+        car.setModelName(readLine(in));
+
+        out.println("Brand ID: ");
+        brand.setId(Integer.parseInt(readLine(in)));
+        car.setBrand(brand);
+
+        out.println("Power: ");
+        carData.setHorsePower(Integer.parseInt(readLine(in)));
+
+        out.println("Weight: ");
+        carData.setWeight(Integer.parseInt(readLine(in)));
+
+        car.setCarData(carData);
+        carRepository.save(car);
+
+        out.println("Inserted car successfully: " + car);
+    }
+
+    private void update() {
+        out.println("Please enter the car id you wish to update");
+        int id = Integer.parseInt(readLine(in));
+        var car = carRepository.get(id);
+
+        out.println("Do you want to update the car model name? (yes/no)");
+        if (readLine(in).equalsIgnoreCase("yes")) {
+            out.println("New Car Model Name: ");
+            car.setModelName(readLine(in));
+        }
+
+        out.println("Do you want to update the brand ID? (yes/no)");
+        if (readLine(in).equalsIgnoreCase("yes")) {
+            var brand = new Brand();
+            out.println("New Brand ID: ");
+            brand.setId(Integer.parseInt(readLine(in)));
+            car.setBrand(brand);
+        }
+
+        var carData = car.getCarData();
+
+        out.println("Do you want to update the HorsePower? (yes/no)");
+        if (readLine(in).equalsIgnoreCase("yes")) {
+            out.println("New HorsePower: ");
+            carData.setHorsePower(Integer.parseInt(readLine(in)));
+        }
+
+        out.println("Do you want to update the weight? (yes/no)");
+        if (readLine(in).equalsIgnoreCase("yes")) {
+            out.println("New Weight: ");
+            carData.setWeight(Integer.parseInt(readLine(in)));
+        }
+
+        car.setCarData(carData);
+        carRepository.save(car);
     }
 
     private void getAll() {
         out.println("\n*** List of Cars ***\n");
         var cars = carRepository.getAll();
         out.println(AsciiTable.getTable(cars, Arrays.asList(
-                new Column().header("Id").with(car -> String.valueOf(car.getCarId())),
-                new Column().header("Model").with(Car::getModel),
-                new Column().header("Manufacturing Year").with(car -> String.valueOf(car.getManufacturingYear())),
-                new Column().header("Power").with(car -> String.valueOf(car.getPower())),
-                new Column().header("Weight").with(car -> String.valueOf(car.getWeight())),
-                new Column().header("Engine Type").with(Car::getEngineType),
-                new Column().header("Chassis Manufacturer").with(Car::getChassisManufacturer)
+                new Column().header("Id").with(c -> String.valueOf(c.getId())),
+                new Column().header("Brand ID").with(c -> String.valueOf(c.getBrand().getId())),
+                new Column().header("Model Name").with(Car::getModelName),
+                new Column().header("Power").with(c -> String.valueOf(c.getCarData().getHorsePower())),
+                new Column().header("Weight").with(c -> String.valueOf(c.getCarData().getWeight()))
         )));
     }
 
-    private void delete() {
-        out.println("\n*** Delete Car ***\n");
-
-        out.println("Enter the ID of the car to delete:");
+    private void get() {
+        out.println("Please enter the car id you wish to search");
         int id = Integer.parseInt(readLine(in));
-
         var car = carRepository.get(id);
-        if (car != null) {
-            carRepository.delete(car);
-            out.println("\nSuccessfully deleted.\n");
-        } else {
-            out.println("\nCar not found.\n");
-        }
-    }
 
-    private void update() {
-        out.println("\n*** Update Car ***\n");
-
-        out.println("Enter the ID of the car to update:");
-        int id = Integer.parseInt(readLine(in));
-
-        var car = carRepository.get(id);
-        if (car != null) {
-
-            out.println("Enter new Model:");
-            car.setModel(readLine(in));
-
-            out.println("Enter new Manufacturing Year:");
-            car.setManufacturingYear(Integer.parseInt(readLine(in)));
-
-            out.println("Enter new Power:");
-            car.setPower(Integer.parseInt(readLine(in)));
-
-            out.println("Enter new Weight:");
-            car.setWeight(Integer.parseInt(readLine(in)));
-
-            out.println("Enter new Engine Type:");
-            car.setEngineType(readLine(in));
-
-            out.println("Enter new Chassis Manufacturer:");
-            car.setChassisManufacturer(readLine(in));
-
-            out.println("Enter new Team Id:");
-            car.setTeamId(Integer.parseInt(readLine(in)));
-
-            carRepository.save(car);
-            out.println("\nSuccessfully updated.\n");
-        } else {
-            out.println("\nCar not found.\n");
-        }
-    }
-
-    private void insert() {
-        out.println("\n*** Insert Car ***\n");
-
-        var car = modelFactory.createCar();
-
-        out.println("Enter the Model:");
-        car.setModel(readLine(in));
-
-        out.println("Enter the Manufacturing Year:");
-        car.setManufacturingYear(Integer.parseInt(readLine(in)));
-
-        out.println("Enter the Power:");
-        car.setPower(Integer.parseInt(readLine(in)));
-
-        out.println("Enter the Weight:");
-        car.setWeight(Integer.parseInt(readLine(in)));
-
-        out.println("Enter the Engine Type:");
-        car.setEngineType(readLine(in));
-
-        out.println("Enter the Chassis Manufacturer:");
-        car.setChassisManufacturer(readLine(in));
-
-        out.println("Enter new Team Id:");
-        car.setTeamId(Integer.parseInt(readLine(in)));
-
-        carRepository.save(car);
-        out.println("\nSuccessfully inserted.\n");
-    }
-
-    private void showCarMenu() {
-        out.println("\n*** Car Management Menu ***\n");
-        out.println("1. Insert Car");
-        out.println("2. Update Car");
-        out.println("3. Delete Car");
-        out.println("4. Get All Cars");
-        out.println("Type 'exit' to quit.");
-        out.println();
+        out.println("\n*** Car Details ***\n");
+        out.println(AsciiTable.getTable(List.of(car), Arrays.asList(
+                new Column().header("Id").with(c -> String.valueOf(c.getId())),
+                new Column().header("Brand ID").with(c -> String.valueOf(c.getBrand().getId())),
+                new Column().header("Model Name").with(Car::getModelName),
+                new Column().header("Power").with(c -> String.valueOf(c.getCarData().getHorsePower())),
+                new Column().header("Weight").with(c -> String.valueOf(c.getCarData().getWeight()))
+        )));
     }
 }

@@ -19,8 +19,8 @@ public class Car implements cat.uvic.teknos.gt3.domain.models.Car {
     }
 
     @Override
-    public void setId(int carId) {
-        this.id = carId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override

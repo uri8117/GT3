@@ -7,11 +7,11 @@ public interface RepositoryFactory {
 
     BrandRepository getBrandRepository() throws SQLException;
 
-    //BrandDataRepository getBrandDataRepository() throws SQLException;
+    BrandDataRepository getBrandDataRepository() throws SQLException;
 
     CarRepository getCarRepository() throws SQLException;
 
-    //CarDataRepository getCarDataRepository() throws SQLException;
+    CarDataRepository getCarDataRepository() throws SQLException;
 
     CircuitRepository getCircuitRepository() throws SQLException;
 

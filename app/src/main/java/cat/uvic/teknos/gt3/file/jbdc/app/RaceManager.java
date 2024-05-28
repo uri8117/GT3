@@ -1,16 +1,23 @@
 package cat.uvic.teknos.gt3.file.jbdc.app;
 
-import cat.uvic.teknos.gt3.domain.models.ModelFactory;
 import cat.uvic.teknos.gt3.domain.models.Race;
+
+import cat.uvic.teknos.gt3.file.jbdc.models.RaceDriverId;
+import cat.uvic.teknos.gt3.file.jbdc.models.Circuit;
+import cat.uvic.teknos.gt3.file.jbdc.models.RaceDriver;
+
 import cat.uvic.teknos.gt3.domain.repositories.RaceRepository;
+import cat.uvic.teknos.gt3.domain.models.ModelFactory;
+import com.github.freva.asciitable.AsciiTable;
+import com.github.freva.asciitable.Column;
+
 
 import java.io.BufferedReader;
 import java.io.PrintStream;
 import java.sql.Date;
 import java.util.Arrays;
-
-import com.github.freva.asciitable.AsciiTable;
-import com.github.freva.asciitable.Column;
+import java.util.HashSet;
+import java.util.List;
 
 import static cat.uvic.teknos.gt3.file.jbdc.app.IOUtils.readLine;
 
@@ -29,100 +36,151 @@ public class RaceManager {
     }
 
     public void start() {
-        out.println("\n*** Race Management ***\n");
-
         var command = "";
         do {
-            showRaceMenu();
+            showMenu();
             command = readLine(in);
 
             switch (command) {
                 case "1" -> insert();
                 case "2" -> update();
                 case "3" -> delete();
-                case "4" -> getAll();
+                case "4" -> get();
+                case "5" -> getAll();
+                default -> out.println("Invalid command");
             }
 
-        } while (!command.equals("exit"));
+        } while (!command.equalsIgnoreCase("exit"));
+        out.println("Exiting Race Management");
+    }
 
-        out.println("\n*** Exiting Race Management ***\n");
+    private void showMenu() {
+        out.println("***Race Manager***");
+        out.println("Type:");
+        out.println("1 to insert a new Race");
+        out.println("2 to update Race");
+        out.println("3 to delete Race");
+        out.println("4 to get a Race");
+        out.println("5 to show all Races");
+        out.println("'exit' to exit");
+    }
+
+    private void delete() {
+        out.println("Please enter the id of the race you would like to delete");
+        int id = Integer.parseInt(readLine(in));
+        var race = modelFactory.createRace();
+        race.setId(id);
+        raceRepository.delete(race);
+    }
+
+    private void insert() {
+        var race = modelFactory.createRace();
+        var circuit = new Circuit();
+        var raceDrivers = new HashSet<cat.uvic.teknos.gt3.domain.models.RaceDriver>();
+
+        out.println("Circuit ID: ");
+        circuit.setId(Integer.parseInt(readLine(in)));
+        race.setCircuit(circuit);
+
+        out.println("Race name: ");
+        race.setRaceName(readLine(in));
+
+        out.println("Race date (YYYY-MM-DD): ");
+        race.setRaceDate(Date.valueOf(readLine(in)));
+
+        out.println("Do you want to add drivers to the race? (yes/no)");
+        if (readLine(in).equalsIgnoreCase("yes")) {
+            insertDrivers(raceDrivers);
+        }
+
+        race.setRaceDrivers(raceDrivers);
+        raceRepository.save(race);
+
+        out.println("Inserted race successfully: " + race);
+    }
+
+    private void insertDrivers(HashSet<cat.uvic.teknos.gt3.domain.models.RaceDriver> raceDrivers) {
+        out.println("Total drivers you want to add: ");
+        int totalDrivers = Integer.parseInt(readLine(in));
+        for (int i = 0; i < totalDrivers; i++) {
+            var raceDriver = new RaceDriver();
+            var raceDriverId = new RaceDriverId();
+
+            out.println("Driver ID: ");
+            raceDriverId.setDriverId(Integer.parseInt(readLine(in)));
+
+            out.println("Driver position: ");
+            raceDriver.setPosition(Integer.parseInt(readLine(in)));
+
+            raceDriver.setId(raceDriverId);
+            raceDrivers.add(raceDriver);
+        }
+    }
+
+    private void update() {
+        var race = modelFactory.createRace();
+        var circuit = new Circuit();
+        var raceDrivers = new HashSet<cat.uvic.teknos.gt3.domain.models.RaceDriver>();
+
+        out.println("Please enter the race id you wish to update");
+        int id = Integer.parseInt(readLine(in));
+        race.setId(id);
+
+        out.println("Do you want to update the circuit ID? (yes/no)");
+        if (readLine(in).equalsIgnoreCase("yes")) {
+            out.println("New Circuit ID: ");
+            circuit.setId(Integer.parseInt(readLine(in)));
+            race.setCircuit(circuit);
+        }
+
+        out.println("Do you want to update the race name? (yes/no)");
+        if (readLine(in).equalsIgnoreCase("yes")) {
+            out.println("New Race name: ");
+            race.setRaceName(readLine(in));
+        }
+
+        out.println("Do you want to update the race date? (yes/no)");
+        if (readLine(in).equalsIgnoreCase("yes")) {
+            out.println("New Race date (YYYY-MM-DD): ");
+            race.setRaceDate(Date.valueOf(readLine(in)));
+        }
+
+        out.println("Do you want to update the drivers in the race? (yes/no)");
+        if (readLine(in).equalsIgnoreCase("yes")) {
+            insertDrivers(raceDrivers);
+        }
+
+        race.setRaceDrivers(raceDrivers);
+        raceRepository.save(race);
     }
 
     private void getAll() {
         out.println("\n*** List of Races ***\n");
         var races = raceRepository.getAll();
         out.println(AsciiTable.getTable(races, Arrays.asList(
-                new Column().header("Id").with(race -> String.valueOf(race.getRaceId())),
-                new Column().header("Name").with(Race::getName),
-                new Column().header("Circuit Id").with(race -> String.valueOf(race.getCircuitId())),
-                new Column().header("Date").with(race -> String.valueOf(race.getDate()))
+                new Column().header("Id").with(race -> String.valueOf(race.getId())),
+                new Column().header("Circuit ID").with(race -> String.valueOf(race.getCircuit().getId())),
+                new Column().header("Race Name").with(cat.uvic.teknos.gt3.domain.models.Race::getRaceName),
+                new Column().header("Race Date").with(race -> String.valueOf(race.getRaceDate()))
         )));
     }
 
-    private void delete() {
-        out.println("\n*** Delete Race ***\n");
-
-        out.println("Enter the ID of the race to delete:");
+    private void get() {
+        out.println("Please enter the race id you wish to search");
         int id = Integer.parseInt(readLine(in));
-
         var race = raceRepository.get(id);
-        if (race != null) {
-            raceRepository.delete(race);
-            out.println("\nSuccessfully deleted.\n");
-        } else {
-            out.println("\nRace not found.\n");
-        }
-    }
 
-    private void update() {
-        out.println("\n*** Update Race ***\n");
+        out.println("\n*** Race Details ***\n");
+        out.println(AsciiTable.getTable(List.of(race), Arrays.asList(
+                new Column().header("Race Name").with(Race::getRaceName),
+                new Column().header("Circuit ID").with(r -> String.valueOf(r.getCircuit().getId())),
+                new Column().header("Race Date").with(r -> String.valueOf(r.getRaceDate()))
+        )));
 
-        out.println("Enter the ID of the race to update:");
-        int id = Integer.parseInt(readLine(in));
-
-        var race = raceRepository.get(id);
-        if (race != null) {
-            out.println("Enter new Name:");
-            race.setName(readLine(in));
-
-            out.println("Enter new Circuit Id:");
-            race.setCircuitId(Integer.parseInt(readLine(in)));
-
-            out.println("Enter new Date (yyyy-mm-dd):");
-            race.setDate(Date.valueOf(readLine(in)));
-
-            raceRepository.save(race);
-            out.println("\nSuccessfully updated.\n");
-        } else {
-            out.println("\nRace not found.\n");
-        }
-    }
-
-    private void insert() {
-        out.println("\n*** Insert Race ***\n");
-
-        var race = modelFactory.createRace();
-
-        out.println("Enter the Name:");
-        race.setName(readLine(in));
-
-        out.println("Enter the Circuit Id:");
-        race.setCircuitId(Integer.parseInt(readLine(in)));
-
-        out.println("Enter the Date (yyyy-mm-dd):");
-        race.setDate(Date.valueOf(readLine(in)));
-
-        raceRepository.save(race);
-        out.println("\nSuccessfully inserted.\n");
-    }
-
-    private void showRaceMenu() {
-        out.println("\n*** Race Management Menu ***\n");
-        out.println("1. Insert Race");
-        out.println("2. Update Race");
-        out.println("3. Delete Race");
-        out.println("4. Get All Races");
-        out.println("Type 'exit' to quit.");
-        out.println();
+        out.println("\n*** Drivers in Race ***\n");
+        out.println(AsciiTable.getTable(race.getRaceDrivers(), Arrays.asList(
+                new Column().header("Driver ID").with(rd -> String.valueOf(rd.getId().getDriverId())),
+                new Column().header("Position").with(rd -> String.valueOf(rd.getPosition()))
+        )));
     }
 }

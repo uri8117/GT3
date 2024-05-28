@@ -4,11 +4,11 @@ public interface ModelFactory {
 
     Brand createBrand();
 
-    //BrandData createBrandData();
+    BrandData createBrandData();
 
     Car createCar();
 
-    //CarData createCarData();
+    CarData createCarData();
 
     Circuit createCircuit();
 

@@ -30,15 +30,8 @@ public class BackOffice {
             command = readLine(in);
 
             switch (command) {
-                case "1" -> managerTeam();
-                case "2" -> managerCircuit();
-                case "3" -> managerDriver();
-                case "4" -> managerCar();
-                case "5" -> managerBrand();
-                case "7" -> managerRace();
-                case "8" -> managerRaceTeam();
-                case "9" -> managerRaceDriver();
-                case "10" -> managerRaceResult();
+                case "1" -> managerCar();
+                case "2" -> managerRace();
             }
 
         } while (!command.equals("exit"));
@@ -46,40 +39,12 @@ public class BackOffice {
         out.println("\n*** Program Finished ***\n");
     }
 
-    private void managerTeam() throws SQLException {
-        new TeamManager(in, out, repositoryFactory.getTeamRepository(), modelFactory).start();
-    }
-
-    private void managerCircuit() throws SQLException {
-        new CircuitManager(in, out, repositoryFactory.getCircuitRepository(), modelFactory).start();
-    }
-
-    private void managerDriver() throws SQLException {
-        new DriverManager(in, out, repositoryFactory.getDriverRepository(), modelFactory).start();
-    }
-
     private void managerCar() throws SQLException {
         new CarManager(in, out, repositoryFactory.getCarRepository(), modelFactory).start();
     }
 
-    private void managerBrand() throws SQLException {
-        new BrandManager(in, out, repositoryFactory.getBrandRepository(), modelFactory).start();
-    }
-
     private void managerRace() throws SQLException {
         new RaceManager(in, out, repositoryFactory.getRaceRepository(), modelFactory).start();
-    }
-
-    private void managerRaceTeam() throws SQLException {
-        //new RaceTeamManager(in, out, repositoryFactory.getRaceTeamRepository(), modelFactory).start();
-    }
-
-    private void managerRaceDriver() throws SQLException {
-        //new RaceDriverManager(in, out, repositoryFactory.getRaceDriverRepository(), modelFactory).start();
-    }
-
-    private void managerRaceResult() throws SQLException {
-        //new RaceResultManager(in, out, repositoryFactory.getRaceResultRepository(), modelFactory).start();
     }
 
 
@@ -91,15 +56,8 @@ public class BackOffice {
 
     private void showMainMenu() {
         out.println("\n*** Main Menu ***\n");
-        out.println("1. Teams");
-        out.println("2. Circuits");
-        out.println("3. Drivers");
-        out.println("4. Cars");
-        out.println("5. Brands");
-        out.println("7. Races");
-        out.println("8. Race Teams");
-        out.println("9. Race Drivers");
-        out.println("10. Race Results");
+        out.println("1. Cars");
+        out.println("2. Races");
         out.println("\nType 'exit' to quit.");
     }
 }
