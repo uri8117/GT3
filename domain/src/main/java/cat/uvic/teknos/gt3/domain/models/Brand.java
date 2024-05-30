@@ -4,18 +4,14 @@ import java.util.Set;
 
 public interface Brand {
     int getId();
-
     void setId(int id);
 
-    String getName();
-
-    void setName(String name);
-
-    Set<Car> getCar();
-
-    void setCar(Set<Car> car);
+    String getBrandName();
+    void setBrandName(String brandName);
 
     BrandData getBrandData();
-
     void setBrandData(BrandData brandData);
+
+    Set<Car> getCars();
+    void setCars(Set<Car> cars);
 }

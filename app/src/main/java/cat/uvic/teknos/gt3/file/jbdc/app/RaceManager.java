@@ -85,8 +85,17 @@ public class RaceManager {
         out.println("Race name: ");
         race.setRaceName(readLine(in));
 
-        out.println("Race date (YYYY-MM-DD): ");
-        race.setRaceDate(Date.valueOf(readLine(in)));
+        boolean validDate = false;
+        while (!validDate) {
+            out.println("Race date (YYYY-MM-DD): ");
+            String dateInput = readLine(in);
+            try {
+                race.setRaceDate(Date.valueOf(dateInput));
+                validDate = true;
+            } catch (IllegalArgumentException e) {
+                out.println("Invalid date format. Please enter the date in YYYY-MM-DD format.");
+            }
+        }
 
         out.println("Do you want to add drivers to the race? (yes/no)");
         if (readLine(in).equalsIgnoreCase("yes")) {

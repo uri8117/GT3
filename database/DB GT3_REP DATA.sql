@@ -1,33 +1,34 @@
 USE GT3_REP;
+
 -- Inserts for the BRAND table
-INSERT INTO BRAND (BRAND_NAME) VALUES 
-('Ferrari'), -- Ferrari brand
-('Porsche'), -- Porsche brand
-('Lamborghini'), -- Lamborghini brand
-('Mercedes'), -- Mercedes brand
-('Audi'); -- Audi brand
+INSERT INTO BRAND (BRAND_NAME) VALUES
+                                   ('Ferrari'), -- Ferrari brand
+                                   ('Porsche'), -- Porsche brand
+                                   ('Lamborghini'), -- Lamborghini brand
+                                   ('Mercedes'), -- Mercedes brand
+                                   ('Audi'); -- Audi brand
 
 -- Inserts for the CAR table
 INSERT INTO CAR (ID_BRAND, MODEL_NAME) VALUES
-(1, '488 GT3'), -- Ferrari 488 GT3
-(2, '911 GT3 R'), -- Porsche 911 GT3 R
-(3, 'Huracan GT3'), -- Lamborghini Huracan GT3
-(4, 'AMG GT3'), -- Mercedes AMG GT3
-(5, 'R8 LMS'); -- Audi R8 LMS
+                                           (1, '488 GT3'), -- Ferrari 488 GT3
+                                           (2, '911 GT3 R'), -- Porsche 911 GT3 R
+                                           (3, 'Huracan GT3'), -- Lamborghini Huracan GT3
+                                           (4, 'AMG GT3'), -- Mercedes AMG GT3
+                                           (5, 'R8 LMS'); -- Audi R8 LMS
 
 -- Inserts for the DRIVER table
 INSERT INTO DRIVER (FIRST_NAME, LAST_NAME, NATIONALITY, BIRTHDATE) VALUES
-('Lewis', 'Hamilton', 'British', '1985-01-07'), -- Lewis Hamilton, British driver
-('Sebastian', 'Vettel', 'German', '1987-07-03'), -- Sebastian Vettel, German driver
-('Max', 'Verstappen', 'Dutch', '1997-09-30'), -- Max Verstappen, Dutch driver
-('Charles', 'Leclerc', 'Monacan', '1997-10-16'), -- Charles Leclerc, Monacan driver
-('Valtteri', 'Bottas', 'Finnish', '1989-08-28'); -- Valtteri Bottas, Finnish driver
+                                                                       ('Lewis', 'Hamilton', 'British', '1985-01-07'), -- Lewis Hamilton, British driver
+                                                                       ('Sebastian', 'Vettel', 'German', '1987-07-03'), -- Sebastian Vettel, German driver
+                                                                       ('Max', 'Verstappen', 'Dutch', '1997-09-30'), -- Max Verstappen, Dutch driver
+                                                                       ('Charles', 'Leclerc', 'Monacan', '1997-10-16'), -- Charles Leclerc, Monacan driver
+                                                                       ('Valtteri', 'Bottas', 'Finnish', '1989-08-28'); -- Valtteri Bottas, Finnish driver
 
 -- Inserts for the BRAND_DATA table
 INSERT INTO BRAND_DATA (ID_BRAND, COUNTRY_OF_ORIGIN, CONTACT_INFO) VALUES
-(1, 'Italy', 'Maranello, Italy - info@ferrari.com'), -- Ferrari brand data
-(2, 'Germany', 'Stuttgart, Germany - info@porsche.com'), -- Porsche brand data
-(3, 'Italy', 'Sant\'Agata Bolognese, Italy - info@lamborghini.com'), -- Lamborghini brand data
+                                                                       (1, 'Italy', 'Maranello, Italy - info@ferrari.com'), -- Ferrari brand data
+                                                                       (2, 'Germany', 'Stuttgart, Germany - info@porsche.com'), -- Porsche brand data
+                                                                       (3, 'Italy', 'Sant Agata Bolognese, Italy - info@lamborghini.com'), -- Lamborghini brand data
 (4, 'Germany', 'Affalterbach, Germany - info@mercedes-benz.com'), -- Mercedes brand data
 (5, 'Germany', 'Ingolstadt, Germany - info@audi.com'); -- Audi brand data
 
@@ -39,13 +40,13 @@ INSERT INTO CAR_DATA (ID_CAR, HORSEPOWER, WEIGHT) VALUES
 (4, 550, 1260), -- Mercedes AMG GT3 data
 (5, 560, 1255); -- Audi R8 LMS data
 
--- Inserts for the CAR_DRIVER table
+/*-- Inserts for the CAR_DRIVER table
 INSERT INTO CAR_DRIVER (ID_CAR, ID_DRIVER) VALUES
 (1, 1), -- Lewis Hamilton drives Ferrari 488 GT3
 (2, 2), -- Sebastian Vettel drives Porsche 911 GT3 R
 (3, 3), -- Max Verstappen drives Lamborghini Huracan GT3
 (4, 4), -- Charles Leclerc drives Mercedes AMG GT3
-(5, 5); -- Valtteri Bottas drives Audi R8 LMS
+(5, 5); -- Valtteri Bottas drives Audi R8 LMS*/
 
 -- Inserts for the CIRCUIT table
 INSERT INTO CIRCUIT (CIRCUIT_NAME, COUNTRY, LENGTH_KM) VALUES
@@ -61,10 +62,10 @@ INSERT INTO RACE (ID_CIRCUIT, RACE_NAME, RACE_DATE) VALUES
 (2, 'British GP', '2024-06-01'), -- British Grand Prix at Silverstone
 (3, 'German GP', '2024-07-01'); -- German Grand Prix at Nurburgring
 
--- Inserts for the RACE_DRIVER table
+/*- Inserts for the RACE_DRIVER table
 INSERT INTO RACE_DRIVER (ID_RACE, ID_DRIVER, POSITION) VALUES
 (1, 1, 1), -- Lewis Hamilton finished 1st in the Italian GP
 (1, 2, 2), -- Sebastian Vettel finished 2nd in the Italian GP
 (2, 3, 1), -- Max Verstappen finished 1st in the British GP
 (2, 4, 2), -- Charles Leclerc finished 2nd in the British GP
-(3, 5, 1); -- Valtteri Bottas finished 1st in the German GP
+(3, 5, 1); -- Valtteri Bottas finished 1st in the German GP*/

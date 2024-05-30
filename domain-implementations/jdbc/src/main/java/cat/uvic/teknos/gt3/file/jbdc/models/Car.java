@@ -8,6 +8,7 @@ import java.util.Set;
 
 public class Car implements cat.uvic.teknos.gt3.domain.models.Car {
     private int id;
+    private int brandId;
     private String modelName;
     private Brand brand;
     private CarData carData;
@@ -21,6 +22,16 @@ public class Car implements cat.uvic.teknos.gt3.domain.models.Car {
     @Override
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public int getBrandId() {
+        return brandId;
+    }
+
+    @Override
+    public void setBrandId(int brandId) {
+        this.brandId = brandId;
     }
 
     @Override

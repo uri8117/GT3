@@ -4,22 +4,20 @@ import java.util.Set;
 
 public interface Car {
     int getId();
-
-    void setId(int carId);
-
-    String getModelName();
-
-    void setModelName(String modelName);
+    void setId(int id);
 
     Brand getBrand();
-
     void setBrand(Brand brand);
 
-    CarData getCarData();
+    String getModelName();
+    void setModelName(String modelName);
 
+    CarData getCarData();
     void setCarData(CarData carData);
 
     Set<Driver> getDrivers();
+    void setDrivers(Set<Driver> drivers);
 
-    void setDrivers(Set<Driver> driver);
+    void addDriver(Driver driver);
+    void removeDriver(Driver driver);
 }

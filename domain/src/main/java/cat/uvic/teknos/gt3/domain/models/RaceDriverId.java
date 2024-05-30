@@ -1,11 +1,11 @@
 package cat.uvic.teknos.gt3.domain.models;
 
-public interface RaceDriverId {
-    int getRaceId();
+import java.io.Serializable;
 
+public interface RaceDriverId extends Serializable {
+    int getRaceId();
     void setRaceId(int raceId);
 
     int getDriverId();
-
     void setDriverId(int driverId);
 }

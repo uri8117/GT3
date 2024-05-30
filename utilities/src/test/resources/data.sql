@@ -1,4 +1,5 @@
 USE GT3_REP;
+
 -- Inserts for the BRAND table
 INSERT INTO BRAND (BRAND_NAME) VALUES
                                    ('Ferrari'), -- Ferrari brand
@@ -27,44 +28,44 @@ INSERT INTO DRIVER (FIRST_NAME, LAST_NAME, NATIONALITY, BIRTHDATE) VALUES
 INSERT INTO BRAND_DATA (ID_BRAND, COUNTRY_OF_ORIGIN, CONTACT_INFO) VALUES
                                                                        (1, 'Italy', 'Maranello, Italy - info@ferrari.com'), -- Ferrari brand data
                                                                        (2, 'Germany', 'Stuttgart, Germany - info@porsche.com'), -- Porsche brand data
-                                                                       (3, 'Italy', 'Sant\ Agata Bolognese, Italy - info@lamborghini.com'), -- Lamborghini brand data
-(4, 'Germany', 'Affalterbach, Germany - info@mercedes-benz.com'), -- Mercedes brand data
-(5, 'Germany', 'Ingolstadt, Germany - info@audi.com'); -- Audi brand data
+                                                                       (3, 'Italy', 'Sant Agata Bolognese, Italy - info@lamborghini.com'), -- Lamborghini brand data
+                                                                       (4, 'Germany', 'Affalterbach, Germany - info@mercedes-benz.com'), -- Mercedes brand data
+                                                                       (5, 'Germany', 'Ingolstadt, Germany - info@audi.com'); -- Audi brand data
 
 -- Inserts for the CAR_DATA table
 INSERT INTO CAR_DATA (ID_CAR, HORSEPOWER, WEIGHT) VALUES
-(1, 600, 1230), -- Ferrari 488 GT3 data
-(2, 500, 1250), -- Porsche 911 GT3 R data
-(3, 580, 1240), -- Lamborghini Huracan GT3 data
-(4, 550, 1260), -- Mercedes AMG GT3 data
-(5, 560, 1255); -- Audi R8 LMS data
+                                                      (1, 600, 1230), -- Ferrari 488 GT3 data
+                                                      (2, 500, 1250), -- Porsche 911 GT3 R data
+                                                      (3, 580, 1240), -- Lamborghini Huracan GT3 data
+                                                      (4, 550, 1260), -- Mercedes AMG GT3 data
+                                                      (5, 560, 1255); -- Audi R8 LMS data
 
--- Inserts for the CAR_DRIVER table
+/*-- Inserts for the CAR_DRIVER table
 INSERT INTO CAR_DRIVER (ID_CAR, ID_DRIVER) VALUES
 (1, 1), -- Lewis Hamilton drives Ferrari 488 GT3
 (2, 2), -- Sebastian Vettel drives Porsche 911 GT3 R
 (3, 3), -- Max Verstappen drives Lamborghini Huracan GT3
 (4, 4), -- Charles Leclerc drives Mercedes AMG GT3
-(5, 5); -- Valtteri Bottas drives Audi R8 LMS
+(5, 5); -- Valtteri Bottas drives Audi R8 LMS*/
 
 -- Inserts for the CIRCUIT table
 INSERT INTO CIRCUIT (CIRCUIT_NAME, COUNTRY, LENGTH_KM) VALUES
-('Monza', 'Italy', 5.793), -- Monza circuit in Italy
-('Silverstone', 'UK', 5.891), -- Silverstone circuit in UK
-('Nurburgring', 'Germany', 5.148), -- Nurburgring circuit in Germany
-('Spa-Francorchamps', 'Belgium', 7.004), -- Spa-Francorchamps circuit in Belgium
-('Le Mans', 'France', 13.626); -- Le Mans circuit in France
+                                                           ('Monza', 'Italy', 5.793), -- Monza circuit in Italy
+                                                           ('Silverstone', 'UK', 5.891), -- Silverstone circuit in UK
+                                                           ('Nurburgring', 'Germany', 5.148), -- Nurburgring circuit in Germany
+                                                           ('Spa-Francorchamps', 'Belgium', 7.004), -- Spa-Francorchamps circuit in Belgium
+                                                           ('Le Mans', 'France', 13.626); -- Le Mans circuit in France
 
 -- Inserts for the RACE table
 INSERT INTO RACE (ID_CIRCUIT, RACE_NAME, RACE_DATE) VALUES
-(1, 'Italian GP', '2024-05-01'), -- Italian Grand Prix at Monza
-(2, 'British GP', '2024-06-01'), -- British Grand Prix at Silverstone
-(3, 'German GP', '2024-07-01'); -- German Grand Prix at Nurburgring
+                                                        (1, 'Italian GP', '2024-05-01'), -- Italian Grand Prix at Monza
+                                                        (2, 'British GP', '2024-06-01'), -- British Grand Prix at Silverstone
+                                                        (3, 'German GP', '2024-07-01'); -- German Grand Prix at Nurburgring
 
--- Inserts for the RACE_DRIVER table
+/*- Inserts for the RACE_DRIVER table
 INSERT INTO RACE_DRIVER (ID_RACE, ID_DRIVER, POSITION) VALUES
 (1, 1, 1), -- Lewis Hamilton finished 1st in the Italian GP
 (1, 2, 2), -- Sebastian Vettel finished 2nd in the Italian GP
 (2, 3, 1), -- Max Verstappen finished 1st in the British GP
 (2, 4, 2), -- Charles Leclerc finished 2nd in the British GP
-(3, 5, 1); -- Valtteri Bottas finished 1st in the German GP
+(3, 5, 1); -- Valtteri Bottas finished 1st in the German GP*/

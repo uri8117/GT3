@@ -39,9 +39,9 @@ public class JdbcModelFactory implements ModelFactory {
     public BrandData createBrandData() {
         return null;
     }
-
-    @Override
-    public CarData createCarData() {
-        return null;
-    }
+//
+//    @Override
+//    public CarData createCarData() {
+//        return new cat.uvic.teknos.gt3.file.jbdc.models.CarData();
+//    }
 }

@@ -13,36 +13,34 @@ import java.util.Set;
 
 public class JdbcCarRepository implements CarRepository {
 
-    private static final String INSERT_CAR = "INSERT INTO CAR (ID_BRAND, MODEL_NAME) VALUES (?,?)";
-    //private static final String INSERT_DRIVER = "INSERT INTO DRIVER (FIRST_NAME, LAST_NAME, NATIONALITY, BITRHDATE) VALUES (?,?,?,?)";
-    private static final String INSERT_CAR_DRIVER = "INSERT INTO CAR_DRIVER (ID_CAR, ID_DRIVER) VALUES (?,?)";
-
-    private static final String INSERT_CAR_DATA = "INSERT INTO CAR_DATA (ID_CAR, HORSEPOWER, WEIGHT) VALUES (?,?,?)";
+    private static final String INSERT_CAR = "INSERT INTO CAR (ID_BRAND, MODEL_NAME) VALUES (?, ?)";
+    private static final String INSERT_CAR_DRIVER = "INSERT INTO CAR_DRIVER (ID_CAR, ID_DRIVER) VALUES (?, ?)";
+    private static final String INSERT_CAR_DATA = "INSERT INTO CAR_DATA (ID_CAR, HORSEPOWER, WEIGHT) VALUES (?, ?)";
 
     private final Connection connection;
 
-    public JdbcCarRepository(Connection connection){
+    public JdbcCarRepository(Connection connection) {
         this.connection = connection;
     }
 
     @Override
     public void save(Car model) {
-        if(model.getId()<=0){
+        if (model.getId() <= 0) {
             insert(model);
-        }else{
+        } else {
             update(model);
         }
     }
 
-    private void insert(Car model){
-        try(var preparedStatement = connection.prepareStatement(INSERT_CAR, Statement.RETURN_GENERATED_KEYS);){
+    private void insert(Car model) {
+        try (var preparedStatement = connection.prepareStatement(INSERT_CAR, Statement.RETURN_GENERATED_KEYS)) {
             connection.setAutoCommit(false);
             preparedStatement.setInt(1, model.getBrand().getId());
             preparedStatement.setString(2, model.getModelName());
             preparedStatement.executeUpdate();
 
             var keys = preparedStatement.getGeneratedKeys();
-            if(keys.next()){
+            if (keys.next()) {
                 model.setId(keys.getInt(1));
                 createDataForCar(model.getId(), model.getCarData());
             } else {
@@ -51,7 +49,7 @@ public class JdbcCarRepository implements CarRepository {
 
             if (model.getDrivers() != null) {
                 for (Driver driver : model.getDrivers()) {
-                    InsertCarDriver(model.getId(), driver);
+                    insertCarDriver(model.getId(), driver);
                 }
             }
 
@@ -59,16 +57,13 @@ public class JdbcCarRepository implements CarRepository {
         } catch (SQLException e) {
             rollback();
             throw new RuntimeException(e);
-        } finally{
-            setAutocommitFalse();
+        } finally {
+            setAutocommitTrue();
         }
-
     }
 
-    private void InsertCarDriver(int carId, Driver model) {
-        try (
-                var preparedStatement = connection.prepareStatement(INSERT_CAR_DRIVER)
-        ) {
+    private void insertCarDriver(int carId, Driver model) {
+        try (var preparedStatement = connection.prepareStatement(INSERT_CAR_DRIVER)) {
             preparedStatement.setInt(1, carId);
             preparedStatement.setInt(2, model.getId());
             preparedStatement.executeUpdate();
@@ -78,9 +73,7 @@ public class JdbcCarRepository implements CarRepository {
     }
 
     private void createDataForCar(int carId, CarData model) {
-        try (
-                var preparedStatement = connection.prepareStatement(INSERT_CAR_DATA)
-        ) {
+        try (var preparedStatement = connection.prepareStatement(INSERT_CAR_DATA)) {
             preparedStatement.setInt(1, carId);
             preparedStatement.setInt(2, model.getHorsePower());
             preparedStatement.setInt(3, model.getWeight());
@@ -90,220 +83,143 @@ public class JdbcCarRepository implements CarRepository {
         }
     }
 
-    public void update(Car model) {
+    private void update(Car model) {
+        try (var carStatement = connection.prepareStatement("UPDATE CAR SET ID_BRAND = ?, MODEL_NAME = ? WHERE ID_CAR = ?")) {
+            connection.setAutoCommit(false);
+            carStatement.setInt(1, model.getBrand().getId());
+            carStatement.setString(2, model.getModelName());
+            carStatement.setInt(3, model.getId());
+            carStatement.executeUpdate();
 
+            updateCarData(model.getCarData(), model.getId());
+
+            if (model.getDrivers() != null) {
+                deleteCarDrivers(model.getId());
+                for (Driver driver : model.getDrivers()) {
+                    insertCarDriver(model.getId(), driver);
+                }
+            }
+
+            connection.commit();
+        } catch (SQLException e) {
+            rollback();
+            throw new RuntimeException(e);
+        } finally {
+            setAutocommitTrue();
+        }
+    }
+
+    private void updateCarData(CarData model, int carId) {
+        try (var carDataStatement = connection.prepareStatement("UPDATE CAR_DATA SET HORSEPOWER = ?, WEIGHT = ? WHERE ID_CAR = ?")) {
+            carDataStatement.setInt(1, model.getHorsePower());
+            carDataStatement.setInt(2, model.getWeight());
+            carDataStatement.setInt(3, carId);
+            carDataStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void deleteCarDrivers(int carId) {
+        try (var preparedStatement = connection.prepareStatement("DELETE FROM CAR_DRIVER WHERE ID_CAR = ?")) {
+            preparedStatement.setInt(1, carId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void delete(Car model) {
-
+        try (var preparedStatement = connection.prepareStatement("DELETE FROM CAR WHERE ID_CAR = ?")) {
+            connection.setAutoCommit(false);
+            preparedStatement.setInt(1, model.getId());
+            preparedStatement.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            rollback();
+            throw new RuntimeException(e);
+        } finally {
+            setAutocommitTrue();
+        }
     }
 
     @Override
     public Car get(Integer id) {
+        String query = "SELECT * FROM CAR WHERE ID_CAR = ?";
+        String queryCarData = "SELECT * FROM CAR_DATA WHERE ID_CAR = ?";
+
+        try (var statement = connection.prepareStatement(query);
+             var carDataStatement = connection.prepareStatement(queryCarData)) {
+
+            statement.setInt(1, id);
+            carDataStatement.setInt(1, id);
+            var resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                Car result = new cat.uvic.teknos.gt3.file.jbdc.models.Car();
+                result.setId(resultSet.getInt("ID_CAR"));
+                result.setModelName(resultSet.getString("MODEL_NAME"));
+                result.setBrandId(resultSet.getInt("ID_BRAND"));
+
+                var resultSetData = carDataStatement.executeQuery();
+                if (resultSetData.next()) {
+                    CarData carData = new cat.uvic.teknos.gt3.file.jbdc.models.CarData();
+                    carData.setHorsePower(resultSetData.getInt("HORSEPOWER"));
+                    carData.setWeight(resultSetData.getInt("WEIGHT"));
+                    result.setCarData(carData);
+                }
+
+                return result;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return null;
     }
 
     @Override
     public Set<Car> getAll() {
-        return Set.of();
+        try (var preparedStatement = connection.prepareStatement("SELECT * FROM CAR");
+             var carDataStatement = connection.prepareStatement("SELECT * FROM CAR_DATA")) {
+
+            var cars = new HashSet<Car>();
+            var resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Car car = new cat.uvic.teknos.gt3.file.jbdc.models.Car();
+                car.setId(resultSet.getInt("ID_CAR"));
+                car.setModelName(resultSet.getString("MODEL_NAME"));
+                car.setBrandId(resultSet.getInt("ID_BRAND"));
+
+                carDataStatement.setInt(1, car.getId());
+                var resultSetData = carDataStatement.executeQuery();
+                if (resultSetData.next()) {
+                    CarData carData = new cat.uvic.teknos.gt3.file.jbdc.models.CarData();
+                    carData.setHorsePower(resultSetData.getInt("HORSEPOWER"));
+                    carData.setWeight(resultSetData.getInt("WEIGHT"));
+                    car.setCarData(carData);
+                }
+
+                cars.add(car);
+            }
+
+            return cars;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    //    private void update(User model){
-//        try(
-//                var preparedStatement = connection.prepareStatement("UPDATE USER SET USERNAME = (?) WHERE ID_USER = (?)");
-//                //var userDataStatement = connection.prepareStatement("UPDATE USER_DATA SET USER_NAME = (?) WHERE ID_USER = (?)")
-//        ){
-//            connection.setAutoCommit(false);
-//
-//            var id = model.getId();
-//            //Will not update User unless there's data, but will still check for UserData
-//            //Since we only are updating username it will be the only thing to will check
-//            if(model.getUsername()!=null){
-//                preparedStatement.setString(1, model.getUsername());
-//                preparedStatement.setInt(2, id);
-//                preparedStatement.executeUpdate();
-//            }
-//
-//
-//            if(model.getUserData()!=null){
-//                saveUser(model.getUserData(), id);
-//                /*
-//                userDataStatement.setInt(2, model.getId());
-//                userDataStatement.setString(1,model.getUserData().getUserName());
-//                userDataStatement.executeUpdate();*/
-//            }
-//            connection.commit();
-//        }catch(SQLException e){
-//            rollback();
-//            throw new RuntimeException(e);
-//        }finally{
-//            setAutocommitFalse();
-//        }
-//
-//    }
-//
-//
-//    private void insertUserData(com.esori.list.models.UserData model, int id) {
-//        try(
-//                var userDataStatement = connection.prepareStatement(INSERT_USER_DATA)){
-//            userDataStatement.setInt(1, id);
-//            userDataStatement.setString(2,model.getUserName());
-//            userDataStatement.setInt(3,model.getPhoneNumber());
-//            userDataStatement.setString(4,model.getCountry());
-//            userDataStatement.setInt(5,model.getAge());
-//            userDataStatement.executeUpdate();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//    }
-//    private void updateUserData(com.esori.list.models.UserData model, int id) {
-//        try(var userDataStatement = connection.prepareStatement("UPDATE USER_DATA SET USER_NAME = (?), " +
-//                "PHONE_NUM = ?, COUNTRY = ?, AGE = ? WHERE ID_USER = (?)")){
-//            userDataStatement.setInt(5, id);
-//            userDataStatement.setString(1,model.getUserName());
-//            userDataStatement.setInt(2,model.getPhoneNumber());
-//            userDataStatement.setString(3,model.getCountry());
-//            userDataStatement.setInt(4,model.getAge());
-//            userDataStatement.executeUpdate();
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-//
-//
-//    @Override
-//    public void delete(User model) {
-//        try(PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM USER where ID_USER = ?")
-//        ) {
-//
-//            //Since the schema has 'ON DELETE CASCADE' on every reference to foreign keys, we only need to Delete User
-//            connection.setAutoCommit(false);
-//            preparedStatement.setInt(1,model.getId());
-//
-//            preparedStatement.executeUpdate();
-//            connection.commit();
-//
-//        } catch (SQLException e) {
-//            rollback();
-//            throw new RuntimeException(e);
-//        } finally {
-//            setAutocommitFalse();
-//        }
-//
-//    }
-//
-//    @Override
-//    public User get(Integer id) {
-//
-//        String query = "SELECT * FROM USER WHERE ID_USER = ?";
-//        String queryUserData = "SELECT * FROM USER_DATA WHERE ID_USER = ?";
-//
-//        try (PreparedStatement statement = connection.prepareStatement(query);
-//             var userDataStatement = connection.prepareStatement(queryUserData)) {
-//
-//            statement.setInt(1, id);
-//            userDataStatement.setInt(1, id);
-//            var resultSet = statement.executeQuery();
-//
-//            User result = getUser(userDataStatement, resultSet);
-//            if (result != null) return result;
-//
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        return null;
-//    }
-//
-//
-//    @Override
-//    public User getByUsername(String username) {
-//        String query = "SELECT * FROM USER WHERE USERNAME = ?";
-//        String queryUserData =  "SELECT * FROM USER_DATA WHERE ID_USER = " +
-//                "(SELECT ID_USER FROM USER WHERE USERNAME = ?)";
-//        try (PreparedStatement statement = connection.prepareStatement(query);
-//             var userDataStatement = connection.prepareStatement(queryUserData)) {
-//
-//            statement.setString(1, username);
-//            userDataStatement.setString(1, username);
-//
-//            try (ResultSet resultSet = statement.executeQuery()) {
-//
-//                User result = getUser(userDataStatement, resultSet);
-//                if (result != null) return result;
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        return null;
-//    }
-//
-//
-//    @Override
-//    public Set<User> getAll() {
-//        try(PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM USER");
-//            var userDataStatement = connection.prepareStatement("SELECT * FROM USER_DATA")) {
-//
-//            var users = new HashSet<User>();
-//            var resultSet = preparedStatement.executeQuery();
-//            var resultSetData = userDataStatement.executeQuery();
-//
-//            while (resultSet.next()) {
-//                User result = new cat.uvic.teknos.musicrep.domain.jdbc.models.User();
-//                result.setId(resultSet.getInt("ID_USER"));
-//                result.setUsername(resultSet.getString("USERNAME"));
-//
-//                getUserData(resultSetData, result);
-//                users.add(result);
-//            }
-//            return users;
-//
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//    }
-//
-//
-//
-//
-//
-//    private User getUser(PreparedStatement userDataStatement, ResultSet resultSet) throws SQLException {
-//        var resultSetData = userDataStatement.executeQuery();
-//        if (resultSet.next()) {
-//
-//            User result = new cat.uvic.teknos.musicrep.domain.jdbc.models.User();
-//            result.setId(resultSet.getInt("ID_USER"));
-//            result.setUsername(resultSet.getString("USERNAME"));
-//
-//            getUserData(resultSetData, result);
-//
-//            return result;
-//        }
-//        return null;
-//    }
-//
-//    private void getUserData(ResultSet resultSetData, User user) throws SQLException {
-//        if(resultSetData.next()){
-//            UserData userData = new UserData();
-//            userData.setUserName(resultSetData.getString("USER_NAME"));
-//            userData.setAge(resultSetData.getInt("AGE"));
-//            userData.setCountry(resultSetData.getString("COUNTRY"));
-//            userData.setPhoneNumber(resultSetData.getInt("PHONE_NUM"));
-//            user.setUserData(userData);
-//        }
-//    }
-//
-    private void setAutocommitFalse() {
+    private void setAutocommitTrue() {
         try {
             connection.setAutoCommit(true);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
     private void rollback() {
         try {
             connection.rollback();
@@ -311,5 +227,4 @@ public class JdbcCarRepository implements CarRepository {
             throw new RuntimeException(ex);
         }
     }
-
 }

@@ -8,7 +8,7 @@ public interface ModelFactory {
 
     Car createCar();
 
-    CarData createCarData();
+    //CarData createCarData();
 
     Circuit createCircuit();
 

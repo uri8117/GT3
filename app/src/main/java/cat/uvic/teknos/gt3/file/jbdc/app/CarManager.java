@@ -72,7 +72,7 @@ public class CarManager {
 
     private void insert() {
         var car = modelFactory.createCar();
-        var carData = modelFactory.createCarData();
+        var carData = new CarData();
         var brand = new Brand();
 
         out.println("Car Model Name: ");
@@ -82,7 +82,7 @@ public class CarManager {
         brand.setId(Integer.parseInt(readLine(in)));
         car.setBrand(brand);
 
-        out.println("Power: ");
+        out.println("HorsePower: ");
         carData.setHorsePower(Integer.parseInt(readLine(in)));
 
         out.println("Weight: ");

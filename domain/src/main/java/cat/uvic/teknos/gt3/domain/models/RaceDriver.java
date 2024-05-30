@@ -1,15 +1,15 @@
-package cat.uvic.teknos.gt3.domain.models;public interface RaceDriver {
-    RaceDriverId getId();
+package cat.uvic.teknos.gt3.domain.models;
 
+public interface RaceDriver {
+    RaceDriverId getId();
     void setId(RaceDriverId id);
 
-    Driver getDriver();
-    void setDriver(Driver driver);
+    int getPosition();
+    void setPosition(int position);
 
     Race getRace();
     void setRace(Race race);
 
-    int getPosition();
-
-    void setPosition(int position);
+    Driver getDriver();
+    void setDriver(Driver driver);
 }
