@@ -22,22 +22,22 @@ public class Brand implements cat.uvic.teknos.gt3.domain.models.Brand {
     }
 
     @Override
-    public String getName() {
+    public String getBrandName() {
         return name;
     }
 
     @Override
-    public void setName(String name) {
+    public void setBrandName(String name) {
         this.name = name;
     }
 
     @Override
-    public Set<Car> getCar() {
+    public Set<Car> getCars() {
         return cars;
     }
 
     @Override
-    public void setCar(Set<Car> car) {
+    public void setCars(Set<Car> car) {
         this.cars = car;
     }
 

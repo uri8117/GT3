@@ -19,12 +19,12 @@ public class CarData implements cat.uvic.teknos.gt3.domain.models.CarData {
     }
 
     @Override
-    public int getHorsePower() {
+    public int getHorsepower() {
         return horsePower;
     }
 
     @Override
-    public void setHorsePower(int horsePower) {
+    public void setHorsepower(int horsePower) {
         this.horsePower = horsePower;
     }
 

@@ -8,7 +8,7 @@ public class Circuit implements cat.uvic.teknos.gt3.domain.models.Circuit {
     private int id;
     private String circuitName;
     private String country;
-    private float length;
+    private double length;
     private Set<Race> races;
     @Override
     public int getId() {
@@ -41,22 +41,22 @@ public class Circuit implements cat.uvic.teknos.gt3.domain.models.Circuit {
     }
 
     @Override
-    public float getLength() {
+    public double getLengthKm() {
         return length;
     }
 
     @Override
-    public void setLength(float length) {
+    public void setLengthKm(double length) {
         this.length = length;
     }
 
     @Override
-    public Set<Race> getRace() {
+    public Set<Race> getRaces() {
         return races;
     }
 
     @Override
-    public void setRace(Set<Race> race) {
+    public void setRaces(Set<Race> race) {
         this.races = race;
     }
 }

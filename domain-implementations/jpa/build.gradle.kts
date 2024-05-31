@@ -18,6 +18,7 @@ dependencies {
     implementation(project(":utilities"))
     implementation("org.hibernate:hibernate-core:6.5.0.Final")
     implementation("com.mysql:mysql-connector-j:8.3.0")
+    testImplementation("com.h2database:h2:2.2.224")
 }
 
 tasks.test {

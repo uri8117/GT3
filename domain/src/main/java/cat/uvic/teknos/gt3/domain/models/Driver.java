@@ -1,6 +1,6 @@
 package cat.uvic.teknos.gt3.domain.models;
 
-import java.time.LocalDate;
+import java.sql.Date;
 import java.util.Set;
 
 public interface Driver {
@@ -16,8 +16,8 @@ public interface Driver {
     String getNationality();
     void setNationality(String nationality);
 
-    LocalDate getBirthdate();
-    void setBirthdate(LocalDate birthdate);
+    Date getBirthdate();
+    void setBirthdate(Date birthdate);
 
     Set<Car> getCars();
     void setCars(Set<Car> cars);

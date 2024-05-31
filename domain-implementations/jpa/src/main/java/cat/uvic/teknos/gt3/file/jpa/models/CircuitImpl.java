@@ -1,8 +1,11 @@
 package cat.uvic.teknos.gt3.file.jpa.models;
 
+import cat.uvic.teknos.gt3.domain.models.Race;
 import jakarta.persistence.*;
 
 import cat.uvic.teknos.gt3.domain.models.Circuit;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "CIRCUIT")
@@ -61,5 +64,15 @@ public class CircuitImpl implements Circuit {
     @Override
     public void setLengthKm(double lengthKm) {
         this.lengthKm = lengthKm;
+    }
+
+    @Override
+    public Set<Race> getRaces() {
+        return Set.of();
+    }
+
+    @Override
+    public void setRaces(Set<Race> race) {
+
     }
 }

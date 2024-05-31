@@ -1,5 +1,7 @@
 package cat.uvic.teknos.gt3.domain.models;
 
+import java.util.Set;
+
 public interface Circuit {
     int getId();
     void setId(int id);
@@ -12,4 +14,7 @@ public interface Circuit {
 
     double getLengthKm();
     void setLengthKm(double lengthKm);
+
+    Set<Race> getRaces();
+    void setRaces(Set<Race> race);
 }

@@ -50,7 +50,7 @@ public class JdbcCarRepositoryTest {
         // Create a new data for car
         var carData = new CarData();
         carData.setCar(car);
-        carData.setHorsePower(660);
+        carData.setHorsepower(660);
         carData.setWeight(1210);
 
         car.setCarData(carData);

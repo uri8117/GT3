@@ -11,6 +11,7 @@ dependencies {
     implementation(project(":utilities"))
     implementation(project(":domain"))
     implementation(project(":domain-implementations:jdbc"))
+    implementation(project(":domain-implementations:jpa"))
     implementation("com.github.freva:ascii-table:1.8.0")}
 
 application {

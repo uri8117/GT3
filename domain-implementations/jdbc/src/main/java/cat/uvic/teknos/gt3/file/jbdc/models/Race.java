@@ -4,6 +4,7 @@ import cat.uvic.teknos.gt3.domain.models.Circuit;
 import cat.uvic.teknos.gt3.domain.models.Driver;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 public class Race implements cat.uvic.teknos.gt3.domain.models.Race {
@@ -62,5 +63,4 @@ public class Race implements cat.uvic.teknos.gt3.domain.models.Race {
     public void setCircuit(Circuit circuit) {
         this.circuit = circuit;
     }
-
 }

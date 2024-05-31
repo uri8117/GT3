@@ -9,34 +9,34 @@ import cat.uvic.teknos.gt3.domain.models.Driver;
 import cat.uvic.teknos.gt3.domain.models.ModelFactory;
 import cat.uvic.teknos.gt3.domain.models.Race;
 
-public class JdbcModelFactory implements ModelFactory {
+public class JpaModelFactory implements ModelFactory {
     @Override
     public Brand createBrand() {
-        return null;
+        return new cat.uvic.teknos.gt3.file.jpa.models.BrandImpl();
     }
 
     @Override
     public BrandData createBrandData() {
-        return null;
+        return new cat.uvic.teknos.gt3.file.jpa.models.BrandDataImpl();
     }
 
     @Override
     public Car createCar() {
-        return null;
+        return new cat.uvic.teknos.gt3.file.jpa.models.CarImpl();
     }
 
     @Override
     public Circuit createCircuit() {
-        return null;
+        return new cat.uvic.teknos.gt3.file.jpa.models.CircuitImpl();
     }
 
     @Override
     public Driver createDriver() {
-        return null;
+        return new cat.uvic.teknos.gt3.file.jpa.models.DriverImpl();
     }
 
     @Override
     public Race createRace() {
-        return null;
+        return new cat.uvic.teknos.gt3.file.jpa.models.RaceImpl();
     }
 }

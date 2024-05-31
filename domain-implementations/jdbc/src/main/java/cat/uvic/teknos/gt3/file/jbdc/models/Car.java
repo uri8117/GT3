@@ -25,16 +25,6 @@ public class Car implements cat.uvic.teknos.gt3.domain.models.Car {
     }
 
     @Override
-    public int getBrandId() {
-        return brandId;
-    }
-
-    @Override
-    public void setBrandId(int brandId) {
-        this.brandId = brandId;
-    }
-
-    @Override
     public String getModelName() {
         return modelName;
     }

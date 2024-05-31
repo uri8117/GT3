@@ -86,16 +86,4 @@ public class CarImpl implements Car {
     public void setDrivers(Set<Driver> drivers) {
         this.drivers = drivers;
     }
-
-    @Override
-    public void addDriver(Driver driver) {
-        this.drivers.add(driver);
-        driver.getCars().add(this);
-    }
-
-    @Override
-    public void removeDriver(Driver driver) {
-        this.drivers.remove(driver);
-        driver.getCars().remove(this);
-    }
 }

@@ -6,7 +6,7 @@ import cat.uvic.teknos.gt3.domain.models.Circuit;
 import cat.uvic.teknos.gt3.domain.models.Race;
 import cat.uvic.teknos.gt3.domain.models.RaceDriver;
 
-import java.time.LocalDate;
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,15 +22,14 @@ public class RaceImpl implements Race {
     private String raceName;
 
     @Column(name = "RACE_DATE", nullable = false)
-    private LocalDate raceDate;
+    private Date raceDate;
 
     @ManyToOne(targetEntity = CircuitImpl.class)
     @JoinColumn(name = "ID_CIRCUIT")
     private Circuit circuit;
 
-    @OneToMany(mappedBy = "race", cascade = CascadeType.ALL, targetEntity = RaceDriverImpl.class)
+    @ManyToMany(mappedBy = "raceDrivers", cascade = CascadeType.ALL, targetEntity = RaceImpl.class)
     private Set<RaceDriver> raceDrivers = new HashSet<>();
-
     // Getters and setters
 
     @Override
@@ -54,12 +53,12 @@ public class RaceImpl implements Race {
     }
 
     @Override
-    public LocalDate getRaceDate() {
+    public Date getRaceDate() {
         return raceDate;
     }
 
     @Override
-    public void setRaceDate(LocalDate raceDate) {
+    public void setRaceDate(Date raceDate) {
         this.raceDate = raceDate;
     }
 

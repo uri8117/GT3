@@ -4,6 +4,7 @@ import cat.uvic.teknos.gt3.domain.models.Car;
 import cat.uvic.teknos.gt3.domain.models.Race;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 public class Driver implements cat.uvic.teknos.gt3.domain.models.Driver {
@@ -66,22 +67,22 @@ public class Driver implements cat.uvic.teknos.gt3.domain.models.Driver {
     }
 
     @Override
-    public Set<Car> getCar() {
+    public Set<Car> getCars() {
         return cars;
     }
 
     @Override
-    public void setCar(Set<Car> car) {
+    public void setCars(Set<Car> car) {
         this.cars = car;
     }
 
     @Override
-    public Set<Race> getRace() {
+    public Set<Race> getRaces() {
         return races;
     }
 
     @Override
-    public void setRace(Set<Race> race) {
+    public void setRaces(Set<Race> race) {
         this.races = race;
     }
 }

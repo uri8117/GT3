@@ -83,7 +83,7 @@ public class CarManager {
         car.setBrand(brand);
 
         out.println("HorsePower: ");
-        carData.setHorsePower(Integer.parseInt(readLine(in)));
+        carData.setHorsepower(Integer.parseInt(readLine(in)));
 
         out.println("Weight: ");
         carData.setWeight(Integer.parseInt(readLine(in)));
@@ -105,20 +105,12 @@ public class CarManager {
             car.setModelName(readLine(in));
         }
 
-        out.println("Do you want to update the brand ID? (yes/no)");
-        if (readLine(in).equalsIgnoreCase("yes")) {
-            var brand = new Brand();
-            out.println("New Brand ID: ");
-            brand.setId(Integer.parseInt(readLine(in)));
-            car.setBrand(brand);
-        }
-
         var carData = car.getCarData();
 
         out.println("Do you want to update the HorsePower? (yes/no)");
         if (readLine(in).equalsIgnoreCase("yes")) {
             out.println("New HorsePower: ");
-            carData.setHorsePower(Integer.parseInt(readLine(in)));
+            carData.setHorsepower(Integer.parseInt(readLine(in)));
         }
 
         out.println("Do you want to update the weight? (yes/no)");
@@ -138,7 +130,7 @@ public class CarManager {
                 new Column().header("Id").with(c -> String.valueOf(c.getId())),
                 new Column().header("Brand ID").with(c -> String.valueOf(c.getBrand().getId())),
                 new Column().header("Model Name").with(Car::getModelName),
-                new Column().header("Power").with(c -> String.valueOf(c.getCarData().getHorsePower())),
+                new Column().header("Power").with(c -> String.valueOf(c.getCarData().getHorsepower())),
                 new Column().header("Weight").with(c -> String.valueOf(c.getCarData().getWeight()))
         )));
     }
@@ -148,13 +140,19 @@ public class CarManager {
         int id = Integer.parseInt(readLine(in));
         var car = carRepository.get(id);
 
+        if (car == null) {
+            out.println("Car not found.");
+            return;
+        }
+
         out.println("\n*** Car Details ***\n");
         out.println(AsciiTable.getTable(List.of(car), Arrays.asList(
                 new Column().header("Id").with(c -> String.valueOf(c.getId())),
-                new Column().header("Brand ID").with(c -> String.valueOf(c.getBrand().getId())),
+                new Column().header("Brand ID").with(c -> c.getBrand() != null ? String.valueOf(c.getBrand().getId()) : "N/A"),
                 new Column().header("Model Name").with(Car::getModelName),
-                new Column().header("Power").with(c -> String.valueOf(c.getCarData().getHorsePower())),
+                new Column().header("Power").with(c -> String.valueOf(c.getCarData().getHorsepower())),
                 new Column().header("Weight").with(c -> String.valueOf(c.getCarData().getWeight()))
         )));
     }
+
 }

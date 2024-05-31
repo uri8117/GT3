@@ -11,7 +11,7 @@ import cat.uvic.teknos.gt3.domain.models.RaceDriverId;
 @Table(name = "RACE_DRIVER")
 public class RaceDriverImpl implements RaceDriver {
     @EmbeddedId
-    private RaceDriverId id;
+    private RaceDriverIdImpl id;
 
     @Column(name = "POSITION", nullable = false)
     private int position;
@@ -35,7 +35,7 @@ public class RaceDriverImpl implements RaceDriver {
 
     @Override
     public void setId(RaceDriverId id) {
-        this.id = id;
+        this.id = (RaceDriverIdImpl) id;
     }
 
     @Override

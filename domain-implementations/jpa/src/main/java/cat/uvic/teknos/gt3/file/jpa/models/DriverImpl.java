@@ -2,7 +2,7 @@ package cat.uvic.teknos.gt3.file.jpa.models;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,13 +28,13 @@ public class DriverImpl implements Driver {
     private String nationality;
 
     @Column(name = "BIRTHDATE", nullable = false)
-    private LocalDate birthdate;
+    private Date birthdate;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, targetEntity = CarImpl.class)
     @JoinTable(name = "CAR_DRIVER", joinColumns = @JoinColumn(name = "ID_DRIVER"), inverseJoinColumns = @JoinColumn(name = "ID_CAR"))
     private Set<Car> cars = new HashSet<>();
 
-    @ManyToMany(mappedBy = "drivers", targetEntity = RaceImpl.class)
+    @ManyToMany(mappedBy = "raceDrivers", targetEntity = RaceImpl.class)
     private Set<Race> races = new HashSet<>();
 
     // Getters and setters
@@ -80,12 +80,12 @@ public class DriverImpl implements Driver {
     }
 
     @Override
-    public LocalDate getBirthdate() {
+    public Date getBirthdate() {
         return birthdate;
     }
 
     @Override
-    public void setBirthdate(LocalDate birthdate) {
+    public void setBirthdate(Date birthdate) {
         this.birthdate = birthdate;
     }
 
