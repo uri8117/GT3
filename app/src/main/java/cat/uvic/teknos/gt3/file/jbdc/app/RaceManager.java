@@ -127,20 +127,13 @@ public class RaceManager {
     }
 
     private void update() {
-        var race = modelFactory.createRace();
-        var circuit = new Circuit();
+        //var race = modelFactory.createRace();
         var raceDrivers = new HashSet<cat.uvic.teknos.gt3.domain.models.RaceDriver>();
 
         out.println("Please enter the race id you wish to update");
         int id = Integer.parseInt(readLine(in));
-        race.setId(id);
-
-        out.println("Do you want to update the circuit ID? (yes/no)");
-        if (readLine(in).equalsIgnoreCase("yes")) {
-            out.println("New Circuit ID: ");
-            circuit.setId(Integer.parseInt(readLine(in)));
-            race.setCircuit(circuit);
-        }
+        var race = raceRepository.get(id);
+        //race.setId(id);
 
         out.println("Do you want to update the race name? (yes/no)");
         if (readLine(in).equalsIgnoreCase("yes")) {
@@ -169,7 +162,7 @@ public class RaceManager {
         out.println(AsciiTable.getTable(races, Arrays.asList(
                 new Column().header("Id").with(race -> String.valueOf(race.getId())),
                 new Column().header("Circuit ID").with(race -> String.valueOf(race.getCircuit().getId())),
-                new Column().header("Race Name").with(cat.uvic.teknos.gt3.domain.models.Race::getRaceName),
+                new Column().header("Race Name").with(Race::getRaceName),
                 new Column().header("Race Date").with(race -> String.valueOf(race.getRaceDate()))
         )));
     }
@@ -179,8 +172,14 @@ public class RaceManager {
         int id = Integer.parseInt(readLine(in));
         var race = raceRepository.get(id);
 
+        if (race == null) {
+            out.println("Race not found");
+            return;
+        }
+
         out.println("\n*** Race Details ***\n");
         out.println(AsciiTable.getTable(List.of(race), Arrays.asList(
+                new Column().header("Id").with(r -> String.valueOf(r.getId())),
                 new Column().header("Race Name").with(Race::getRaceName),
                 new Column().header("Circuit ID").with(r -> String.valueOf(r.getCircuit().getId())),
                 new Column().header("Race Date").with(r -> String.valueOf(r.getRaceDate()))
