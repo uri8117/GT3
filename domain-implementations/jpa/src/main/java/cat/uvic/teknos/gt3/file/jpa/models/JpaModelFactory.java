@@ -1,42 +1,39 @@
 package cat.uvic.teknos.gt3.file.jpa.models;
 
 
-import cat.uvic.teknos.gt3.domain.models.Brand;
-import cat.uvic.teknos.gt3.domain.models.BrandData;
-import cat.uvic.teknos.gt3.domain.models.Car;
-import cat.uvic.teknos.gt3.domain.models.Circuit;
-import cat.uvic.teknos.gt3.domain.models.Driver;
-import cat.uvic.teknos.gt3.domain.models.ModelFactory;
-import cat.uvic.teknos.gt3.domain.models.Race;
+import cat.uvic.teknos.gt3.domain.models.*;
 
 public class JpaModelFactory implements ModelFactory {
     @Override
     public Brand createBrand() {
-        return new cat.uvic.teknos.gt3.file.jpa.models.BrandImpl();
+        return new Brand();
     }
 
     @Override
     public BrandData createBrandData() {
-        return new cat.uvic.teknos.gt3.file.jpa.models.BrandDataImpl();
+        return new BrandData();
     }
 
     @Override
     public Car createCar() {
-        return new cat.uvic.teknos.gt3.file.jpa.models.CarImpl();
+        return new Car();
     }
 
+    public CarData createCarData() {
+        return new CarData();
+    }
     @Override
     public Circuit createCircuit() {
-        return new cat.uvic.teknos.gt3.file.jpa.models.CircuitImpl();
+        return new Circuit();
     }
 
     @Override
     public Driver createDriver() {
-        return new cat.uvic.teknos.gt3.file.jpa.models.DriverImpl();
+        return new Driver();
     }
 
     @Override
     public Race createRace() {
-        return new cat.uvic.teknos.gt3.file.jpa.models.RaceImpl();
+        return new Race();
     }
 }

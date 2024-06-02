@@ -6,13 +6,9 @@ import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import cat.uvic.teknos.gt3.domain.models.Car;
-import cat.uvic.teknos.gt3.domain.models.Driver;
-import cat.uvic.teknos.gt3.domain.models.Race;
-
 @Entity
 @Table(name = "DRIVER")
-public class DriverImpl implements Driver {
+public class Driver implements cat.uvic.teknos.gt3.domain.models.Driver {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_DRIVER")
@@ -30,12 +26,21 @@ public class DriverImpl implements Driver {
     @Column(name = "BIRTHDATE", nullable = false)
     private Date birthdate;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, targetEntity = CarImpl.class)
-    @JoinTable(name = "CAR_DRIVER", joinColumns = @JoinColumn(name = "ID_DRIVER"), inverseJoinColumns = @JoinColumn(name = "ID_CAR"))
-    private Set<Car> cars = new HashSet<>();
+    @ManyToMany(targetEntity = Car.class)
+    @JoinTable(
+            name = "CAR_DRIVER",
+            joinColumns = @JoinColumn(name = "ID_DRIVER"),
+            inverseJoinColumns = @JoinColumn(name = "ID_CAR")
+    )
+    private Set<cat.uvic.teknos.gt3.domain.models.Car> cars = new HashSet<>();
 
-    @ManyToMany(mappedBy = "raceDrivers", targetEntity = RaceImpl.class)
-    private Set<Race> races = new HashSet<>();
+    @ManyToMany(targetEntity = Race.class)
+    @JoinTable(
+            name = "RACE_DRIVER",
+            joinColumns = @JoinColumn(name = "ID_DRIVER"),
+            inverseJoinColumns = @JoinColumn(name = "ID_RACE")
+    )
+    private Set<cat.uvic.teknos.gt3.domain.models.Race> races = new HashSet<>();
 
     // Getters and setters
 
@@ -90,22 +95,22 @@ public class DriverImpl implements Driver {
     }
 
     @Override
-    public Set<Car> getCars() {
+    public Set<cat.uvic.teknos.gt3.domain.models.Car> getCars() {
         return cars;
     }
 
     @Override
-    public void setCars(Set<Car> cars) {
+    public void setCars(Set<cat.uvic.teknos.gt3.domain.models.Car> cars) {
         this.cars = cars;
     }
 
     @Override
-    public Set<Race> getRaces() {
+    public Set<cat.uvic.teknos.gt3.domain.models.Race> getRaces() {
         return races;
     }
 
     @Override
-    public void setRaces(Set<Race> races) {
+    public void setRaces(Set<cat.uvic.teknos.gt3.domain.models.Race> races) {
         this.races = races;
     }
 }

@@ -2,15 +2,12 @@ package cat.uvic.teknos.gt3.file.jpa.models;
 
 import jakarta.persistence.*;
 
-import cat.uvic.teknos.gt3.domain.models.Car;
-import cat.uvic.teknos.gt3.domain.models.CarData;
-
 @Entity
 @Table(name = "CAR_DATA")
-public class CarDataImpl implements CarData {
+public class CarData implements cat.uvic.teknos.gt3.domain.models.CarData {
     @Id
-    @Column(name = "ID_CAR")
-    private int id;
+    @Column(name = "CAR_ID")
+    private Integer id;
 
     @Column(name = "HORSEPOWER", nullable = false)
     private int horsepower;
@@ -18,7 +15,7 @@ public class CarDataImpl implements CarData {
     @Column(name = "WEIGHT", nullable = false)
     private int weight;
 
-    @OneToOne(targetEntity = CarImpl.class)
+    @OneToOne
     @MapsId
     @JoinColumn(name = "ID_CAR")
     private Car car;
@@ -56,12 +53,12 @@ public class CarDataImpl implements CarData {
     }
 
     @Override
-    public Car getCar() {
+    public cat.uvic.teknos.gt3.domain.models.Car getCar() {
         return car;
     }
 
     @Override
-    public void setCar(Car car) {
-        this.car = car;
+    public void setCar(cat.uvic.teknos.gt3.domain.models.Car car) {
+        this.car = (Car) car;
     }
 }

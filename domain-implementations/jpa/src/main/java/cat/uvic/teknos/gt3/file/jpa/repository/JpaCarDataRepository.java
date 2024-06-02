@@ -2,22 +2,23 @@ package cat.uvic.teknos.gt3.file.jpa.repository;
 
 import cat.uvic.teknos.gt3.domain.models.CarData;
 import cat.uvic.teknos.gt3.domain.repositories.CarDataRepository;
-import cat.uvic.teknos.gt3.file.jpa.models.CarDataImpl;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class JpaCarDataRepository implements CarDataRepository {
-    private final EntityManager entityManager;
+    private final EntityManagerFactory entityManagerFactory;
 
-    public JpaCarDataRepository(EntityManager entityManager){
-        this.entityManager = entityManager;
+    public JpaCarDataRepository(EntityManagerFactory entityManagerFactory){
+        this.entityManagerFactory = entityManagerFactory;
     }
 
     @Override
     public void save(CarData model) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try{
             entityManager.getTransaction().begin();
             if(model.getId() <= 0){
@@ -34,6 +35,7 @@ public class JpaCarDataRepository implements CarDataRepository {
 
     @Override
     public void delete(CarData model) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try{
             entityManager.getTransaction().begin();
             var carData = entityManager.find(cat.uvic.teknos.gt3.domain.models.CarData.class, model.getId());
@@ -47,12 +49,14 @@ public class JpaCarDataRepository implements CarDataRepository {
 
     @Override
     public CarData get(Integer id) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         return entityManager.find(cat.uvic.teknos.gt3.domain.models.CarData.class, id);
     }
 
     @Override
     public Set<CarData> getAll() {
-        List<CarData> carDataList = entityManager.createQuery("SELECT u FROM CarDataImpl u", CarData.class).getResultList();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        List<CarData> carDataList = entityManager.createQuery("SELECT u FROM CarData u", CarData.class).getResultList();
         return new HashSet<>(carDataList);
     }
 }

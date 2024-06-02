@@ -2,12 +2,9 @@ package cat.uvic.teknos.gt3.file.jpa.models;
 
 import jakarta.persistence.*;
 
-import cat.uvic.teknos.gt3.domain.models.Brand;
-import cat.uvic.teknos.gt3.domain.models.BrandData;
-
 @Entity
 @Table(name = "BRAND_DATA")
-public class BrandDataImpl implements BrandData {
+public class BrandData implements cat.uvic.teknos.gt3.domain.models.BrandData {
     @Id
     @Column(name = "ID_BRAND")
     private int id;
@@ -18,13 +15,12 @@ public class BrandDataImpl implements BrandData {
     @Column(name = "CONTACT_INFO")
     private String contactInfo;
 
-    @OneToOne(targetEntity = BrandImpl.class)
+    @OneToOne(targetEntity = Brand.class)
     @MapsId
     @JoinColumn(name = "ID_BRAND")
-    private Brand brand;
+    private cat.uvic.teknos.gt3.domain.models.Brand brand;
 
     // Getters and setters
-
     @Override
     public int getId() {
         return id;
@@ -56,12 +52,12 @@ public class BrandDataImpl implements BrandData {
     }
 
     @Override
-    public Brand getBrand() {
+    public cat.uvic.teknos.gt3.domain.models.Brand getBrand() {
         return brand;
     }
 
     @Override
-    public void setBrand(Brand brand) {
+    public void setBrand(cat.uvic.teknos.gt3.domain.models.Brand brand) {
         this.brand = brand;
     }
 }

@@ -14,3 +14,5 @@ rootProject.name = "gt3"
 include("app", "domain", "utilities", ":domain-implementations:file", ":domain-implementations:jdbc")
 include("domain-implementations:jpa")
 findProject(":domain-implementations:jpa")?.name = "jpa"
+include("domainImplementation:src:main.java")
+findProject(":domainImplementation:src:main.java")?.name = "main.java"

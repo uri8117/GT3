@@ -2,22 +2,23 @@ package cat.uvic.teknos.gt3.file.jpa.repository;
 
 import cat.uvic.teknos.gt3.domain.models.Race;
 import cat.uvic.teknos.gt3.domain.repositories.RaceRepository;
-import cat.uvic.teknos.gt3.file.jpa.models.RaceImpl;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class JpaRaceRepository implements RaceRepository {
-    private final EntityManager entityManager;
+    private final EntityManagerFactory entityManagerFactory;
 
-    public JpaRaceRepository(EntityManager entityManager){
-        this.entityManager = entityManager;
+    public JpaRaceRepository(EntityManagerFactory entityManagerFactory){
+        this.entityManagerFactory = entityManagerFactory;
     }
 
     @Override
     public void save(Race model) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try{
             entityManager.getTransaction().begin();
             if(model.getId() <= 0){
@@ -34,6 +35,7 @@ public class JpaRaceRepository implements RaceRepository {
 
     @Override
     public void delete(Race model) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try{
             entityManager.getTransaction().begin();
             var race = entityManager.find(cat.uvic.teknos.gt3.domain.models.Race.class, model.getId());
@@ -47,12 +49,14 @@ public class JpaRaceRepository implements RaceRepository {
 
     @Override
     public Race get(Integer id) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         return entityManager.find(cat.uvic.teknos.gt3.domain.models.Race.class, id);
     }
 
     @Override
     public Set<Race> getAll() {
-        List<Race> raceList = entityManager.createQuery("SELECT u FROM RaceImpl u", Race.class).getResultList();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        List<Race> raceList = entityManager.createQuery("SELECT u FROM Race u", Race.class).getResultList();
         return new HashSet<>(raceList);
     }
 }

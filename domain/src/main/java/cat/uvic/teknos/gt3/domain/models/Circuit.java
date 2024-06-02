@@ -16,5 +16,5 @@ public interface Circuit {
     void setLengthKm(double lengthKm);
 
     Set<Race> getRaces();
-    void setRaces(Set<Race> race);
+    void setRaces(Race race);
 }

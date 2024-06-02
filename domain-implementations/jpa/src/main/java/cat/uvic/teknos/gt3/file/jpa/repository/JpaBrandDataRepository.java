@@ -2,22 +2,23 @@ package cat.uvic.teknos.gt3.file.jpa.repository;
 
 import cat.uvic.teknos.gt3.domain.models.BrandData;
 import cat.uvic.teknos.gt3.domain.repositories.BrandDataRepository;
-import cat.uvic.teknos.gt3.file.jpa.models.BrandDataImpl;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class JpaBrandDataRepository implements BrandDataRepository {
-    private final EntityManager entityManager;
+    private final EntityManagerFactory entityManagerFactory;
 
-    public JpaBrandDataRepository(EntityManager entityManager){
-        this.entityManager = entityManager;
+    public JpaBrandDataRepository(EntityManagerFactory entityManagerFactory){
+        this.entityManagerFactory = entityManagerFactory;
     }
 
     @Override
     public void save(BrandData model) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try{
             entityManager.getTransaction().begin();
             if(model.getId() <= 0){
@@ -34,6 +35,7 @@ public class JpaBrandDataRepository implements BrandDataRepository {
 
     @Override
     public void delete(BrandData model) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try{
             entityManager.getTransaction().begin();
             var brandData = entityManager.find(cat.uvic.teknos.gt3.domain.models.BrandData.class, model.getId());
@@ -47,12 +49,14 @@ public class JpaBrandDataRepository implements BrandDataRepository {
 
     @Override
     public BrandData get(Integer id) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         return entityManager.find(cat.uvic.teknos.gt3.domain.models.BrandData.class, id);
     }
 
     @Override
     public Set<BrandData> getAll() {
-        List<BrandData> brandDataList = entityManager.createQuery("SELECT u FROM BrandDataImpl u", BrandData.class).getResultList();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        List<BrandData> brandDataList = entityManager.createQuery("SELECT u FROM BrandData u", BrandData.class).getResultList();
         return new HashSet<>(brandDataList);
     }
 }

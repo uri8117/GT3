@@ -1,5 +1,6 @@
 package cat.uvic.teknos.gt3.file.jpa.repository;
 
+import cat.uvic.teknos.gt3.domain.exceptions.RepositoryException;
 import cat.uvic.teknos.gt3.domain.repositories.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -12,48 +13,50 @@ import java.util.Properties;
 public class JpaRepositoryFactory implements RepositoryFactory {
 
     private final EntityManagerFactory entityManagerFactory;
-    private final EntityManager entityManager;
 
-    public JpaRepositoryFactory() throws IOException {
+    public JpaRepositoryFactory() {
         var properties = new Properties();
-        properties.load(JpaRepositoryFactory.class.getResourceAsStream("/persistence.properties"));
+        try {
+            properties.load(JpaRepositoryFactory.class.getResourceAsStream("/jpa.properties"));
+        } catch (IOException e) {
+            throw new RepositoryException(e);
+        }
         entityManagerFactory = Persistence.createEntityManagerFactory("gt3_rep_mysql", properties);
-        entityManager = entityManagerFactory.createEntityManager();
     }
 
     @Override
     public BrandRepository getBrandRepository() throws SQLException {
-        return new JpaBrandRepository(entityManager);
+        return new JpaBrandRepository(entityManagerFactory);
     }
 
     @Override
     public BrandDataRepository getBrandDataRepository() throws SQLException {
-        return new JpaBrandDataRepository(entityManager);
+        return new JpaBrandDataRepository(entityManagerFactory);
     }
 
     @Override
     public CarRepository getCarRepository() throws SQLException {
-        return new JpaCarRepository(entityManager);
+        return new JpaCarRepository(entityManagerFactory);
     }
 
     @Override
     public CarDataRepository getCarDataRepository() throws SQLException {
-        return new JpaCarDataRepository(entityManager);
+        return new JpaCarDataRepository(entityManagerFactory);
     }
 
     @Override
     public CircuitRepository getCircuitRepository() throws SQLException {
-        return new JpaCircuitRepository(entityManager);
+        return new JpaCircuitRepository(entityManagerFactory);
     }
 
     @Override
     public DriverRepository getDriverRepository() throws SQLException {
-        return new JpaDriverRepository(entityManager);
+        return new JpaDriverRepository(entityManagerFactory);
     }
 
     @Override
     public RaceRepository getRaceRepository() throws SQLException {
-        return new JpaRaceRepository(entityManager);
+        return new JpaRaceRepository(entityManagerFactory);
     }
 }
 

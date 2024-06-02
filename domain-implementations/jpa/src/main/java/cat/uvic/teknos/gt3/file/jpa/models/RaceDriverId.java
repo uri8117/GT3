@@ -3,10 +3,8 @@ package cat.uvic.teknos.gt3.file.jpa.models;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
-import cat.uvic.teknos.gt3.domain.models.RaceDriverId;
-
 @Embeddable
-public class RaceDriverIdImpl implements RaceDriverId {
+public class RaceDriverId implements cat.uvic.teknos.gt3.domain.models.RaceDriverId {
     @Column(name = "ID_RACE")
     private int raceId;
 

@@ -1,21 +1,19 @@
 package cat.uvic.teknos.gt3.file.jpa.models;
 
-import cat.uvic.teknos.gt3.domain.models.Race;
 import jakarta.persistence.*;
 
-import cat.uvic.teknos.gt3.domain.models.Circuit;
-
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "CIRCUIT")
-public class CircuitImpl implements Circuit {
+public class Circuit implements cat.uvic.teknos.gt3.domain.models.Circuit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_CIRCUIT")
     private int id;
 
-    @Column(name = "CIRCUIT_NAME", nullable = false, unique = true)
+    @Column(name = "CIRCUIT_NAME", nullable = false)
     private String circuitName;
 
     @Column(name = "COUNTRY", nullable = false)
@@ -23,6 +21,9 @@ public class CircuitImpl implements Circuit {
 
     @Column(name = "LENGTH_KM", nullable = false)
     private double lengthKm;
+
+    @OneToMany(mappedBy = "circuit", cascade = CascadeType.ALL, targetEntity = Race.class)
+    private Set<cat.uvic.teknos.gt3.domain.models.Race> races = new HashSet<>();
 
     // Getters and setters
 
@@ -67,12 +68,13 @@ public class CircuitImpl implements Circuit {
     }
 
     @Override
-    public Set<Race> getRaces() {
-        return Set.of();
+    public Set<cat.uvic.teknos.gt3.domain.models.Race> getRaces() {
+        return races;
     }
 
     @Override
-    public void setRaces(Set<Race> race) {
-
+    public void setRaces(cat.uvic.teknos.gt3.domain.models.Race race) {
+        this.races.add(race);
     }
+
 }

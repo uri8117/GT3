@@ -5,30 +5,25 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-import cat.uvic.teknos.gt3.domain.models.Brand;
-import cat.uvic.teknos.gt3.domain.models.BrandData;
-import cat.uvic.teknos.gt3.domain.models.Car;
-
 @Entity
 @Table(name = "BRAND")
-public class BrandImpl implements Brand {
+public class Brand implements cat.uvic.teknos.gt3.domain.models.Brand {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_BRAND")
     private int id;
 
-    @Column(name = "BRAND_NAME", nullable = false, unique = true)
+    @Column(name = "BRAND_NAME", nullable = false)
     private String brandName;
 
-    @OneToOne(mappedBy = "brand", cascade = CascadeType.ALL, targetEntity = BrandDataImpl.class)
-    @PrimaryKeyJoinColumn
-    private BrandData brandData;
+    @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = Car.class)
+    private Set<cat.uvic.teknos.gt3.domain.models.Car> cars = new HashSet<>();
 
-    @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL, targetEntity = CarImpl.class)
-    private Set<Car> cars = new HashSet<>();
+    @OneToOne(mappedBy = "brand", cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = BrandData.class)
+    private cat.uvic.teknos.gt3.domain.models.BrandData brandData;
 
     // Getters and setters
-
     @Override
     public int getId() {
         return id;
@@ -50,12 +45,12 @@ public class BrandImpl implements Brand {
     }
 
     @Override
-    public BrandData getBrandData() {
+    public cat.uvic.teknos.gt3.domain.models.BrandData getBrandData() {
         return brandData;
     }
 
     @Override
-    public void setBrandData(BrandData brandData) {
+    public void setBrandData(cat.uvic.teknos.gt3.domain.models.BrandData brandData) {
         this.brandData = brandData;
         if (brandData != null) {
             brandData.setBrand(this);
@@ -63,12 +58,12 @@ public class BrandImpl implements Brand {
     }
 
     @Override
-    public Set<Car> getCars() {
+    public Set<cat.uvic.teknos.gt3.domain.models.Car> getCars() {
         return cars;
     }
 
     @Override
-    public void setCars(Set<Car> cars) {
+    public void setCars(Set<cat.uvic.teknos.gt3.domain.models.Car> cars) {
         this.cars = cars;
     }
 }

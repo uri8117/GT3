@@ -3,24 +3,24 @@ package cat.uvic.teknos.gt3.file.jpa.repository;
 
 import cat.uvic.teknos.gt3.domain.models.Brand;
 import cat.uvic.teknos.gt3.domain.repositories.BrandRepository;
-import cat.uvic.teknos.gt3.file.jpa.models.BrandImpl;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class JpaBrandRepository implements BrandRepository {
-    private final EntityManager entityManager;
+    private final EntityManagerFactory entityManagerFactory;
 
-    public JpaBrandRepository(EntityManager entityManager){
-        this.entityManager = entityManager;
+    public JpaBrandRepository(EntityManagerFactory entityManagerFactory){
+        this.entityManagerFactory = entityManagerFactory;
     }
 
 
     @Override
     public void save(Brand model) {
-
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try{
             entityManager.getTransaction().begin();
             if(model.getId()<=0){
@@ -38,6 +38,7 @@ public class JpaBrandRepository implements BrandRepository {
 
     @Override
     public void delete(Brand model) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try{
             entityManager.getTransaction().begin();
             var playlist = entityManager.find(cat.uvic.teknos.gt3.domain.models.Brand.class, model.getId());
@@ -51,13 +52,14 @@ public class JpaBrandRepository implements BrandRepository {
 
     @Override
     public Brand get(Integer id) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         return entityManager.find(cat.uvic.teknos.gt3.domain.models.Brand.class, id);
-
     }
 
     @Override
     public Set<Brand> getAll() {
-        List<Brand> playlistList = entityManager.createQuery("SELECT u FROM BrandImpl u", Brand.class).getResultList();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        List<Brand> playlistList = entityManager.createQuery("SELECT u FROM Brand u", Brand.class).getResultList();
         return new HashSet<>(playlistList);
     }
 }

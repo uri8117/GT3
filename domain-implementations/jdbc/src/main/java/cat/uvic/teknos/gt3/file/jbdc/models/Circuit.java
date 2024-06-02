@@ -56,7 +56,8 @@ public class Circuit implements cat.uvic.teknos.gt3.domain.models.Circuit {
     }
 
     @Override
-    public void setRaces(Set<Race> race) {
-        this.races = race;
+    public void setRaces(Race race) {
+        this.races.add(race);
     }
+
 }
